@@ -6,6 +6,12 @@
             "email": "thucfami@gmail.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/thuccoi/tami.git"
+        }
+    ],
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
