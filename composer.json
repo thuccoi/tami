@@ -12,7 +12,6 @@
             "url": "https://github.com/thuccoi/tami.git"
         }
     ],
-    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "Tami\\": "src/"
