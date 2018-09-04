@@ -7,5 +7,10 @@
         }
     ],
     "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Tami\\": "src/"
+        }  
+    },
     "require": {}
 }
