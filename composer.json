@@ -1,0 +1,11 @@
+{
+    "name": "thuc/tami",
+    "authors": [
+        {
+            "name": "Nguyen The Thuc",
+            "email": "thucfami@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
