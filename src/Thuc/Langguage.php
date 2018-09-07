@@ -99,7 +99,6 @@ class Langguage {
         "N’" => ["NH", "Nh"],
         "n’" => ["nh", "nH"]
     ];
-    
     public static $onelangguage = [
         "D" => "Đ",
         "d" => "đ",
@@ -114,7 +113,9 @@ class Langguage {
         "W" => "Th",
         "w" => "th",
         "N’" => "Nh",
-        "n’" => "nh"
+        "N'" => "Nh",
+        "n’" => "nh",
+        "n'" => "nh"
     ];
 
     public static function translateVINew($string) {
