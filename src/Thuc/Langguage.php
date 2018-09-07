@@ -95,7 +95,7 @@ class Langguage {
         "X" => ["KH", "Kh"],
         "x" => ["kh", "kH"],
         "W" => ["TH", "Th"],
-        "w" => ["TH", "tH"],
+        "w" => ["th", "tH"],
         "N’" => ["NH", "Nh"],
         "n’" => ["nh", "nH"]
     ];
