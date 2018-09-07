@@ -102,20 +102,20 @@ class Langguage {
     public static $onelangguage = [
         "D" => "Đ",
         "d" => "đ",
-        "G" => "Gh",
         "g" => "gh",
-        "F" => "Ph",
+        "G" => "Gh",
         "f" => "ph",
-        "X" => "Kh",
+        "F" => "Ph",
         "x" => "kh",
+        "X" => "Kh",
         "S" => "X",
         "s" => "x",
-        "W" => "Th",
         "w" => "th",
-        "N’" => "Nh",
-        "N'" => "Nh",
+        "W" => "Th",
         "n’" => "nh",
-        "n'" => "nh"
+        "n'" => "nh",
+        "N’" => "Nh",
+        "N'" => "Nh"
     ];
 
     public static function translateVINew($string) {
