@@ -134,8 +134,6 @@ class Langguage {
         "F" => "Ph",
         "x" => "kh",
         "X" => "Kh",
-        "S" => "X",
-        "s" => "x",
         "w" => "th",
         "W" => "Th",
         "n’" => "nh",
