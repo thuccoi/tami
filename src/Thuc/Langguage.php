@@ -74,8 +74,6 @@ class Langguage {
         '‘', '’', '“', '”', '‗', '–'
     ];
     public static $newlangguage = [
-        "C" => ["CH", "TR", "Ch", "Tr"],
-        "c" => ["ch", "tr", "cH", "tR"],
         "Z" => ["D", "GI", "R", "Gi"],
         "z" => ["d", "gi", "r", "gI"],
         "D" => ["Đ"],
@@ -86,6 +84,8 @@ class Langguage {
         "f" => ["ph", "pH"],
         "K" => ["C", "Q"],
         "k" => ["c", "q"],
+        "C" => ["CH", "TR", "Ch", "Tr"],
+        "c" => ["ch", "tr", "cH", "tR"],
         "Q" => ["NG", "NGH", "Ng", "NgH", "Ngh", "NGh"],
         "q" => ["ng", "ngh", "nG", "nGh", "nGH", "ngH"],
         "R" => [],
