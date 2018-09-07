@@ -99,6 +99,23 @@ class Langguage {
         "N’" => ["NH", "Nh"],
         "n’" => ["nh", "nH"]
     ];
+    
+    public static $onelangguage = [
+        "D" => "Đ",
+        "d" => "đ",
+        "G" => "Gh",
+        "g" => "gh",
+        "F" => "Ph",
+        "f" => "ph",
+        "S" => "X",
+        "s" => "x",
+        "X" => "Kh",
+        "x" => "kh",
+        "W" => "Th",
+        "w" => "th",
+        "N’" => "Nh",
+        "n’" => "nh"
+    ];
 
     public static function translateVINew($string) {
         foreach (self::$newlangguage as $key => $arr) {
