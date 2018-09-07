@@ -2,7 +2,7 @@
 
 namespace Thuc;
 
-class String {
+class Langguage {
 
     public static $charaters = [
         'a', 'á', 'à', 'ả', 'ã', 'ạ',

@@ -28,7 +28,7 @@ class Code {
                 break;
         }
 
-        return \Thuc\String::purify($string);
+        return \Thuc\Langguage::purify($string);
     }
 
     public function get($name) {
