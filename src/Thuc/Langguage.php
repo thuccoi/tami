@@ -128,6 +128,8 @@ class Langguage {
     public static $onelangguage = [
         "D" => "Đ",
         "d" => "đ",
+        "G" => "Gh",
+        "g" => "gh",
         "f" => "ph",
         "F" => "Ph",
         "x" => "kh",
