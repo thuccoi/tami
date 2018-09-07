@@ -70,8 +70,46 @@ class String {
         'z',
         'Z',
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-        ' ', '   ', '.', ',', '/', '@', '+', '-', ':', '_'
+        ' ', '   ', '.', ',', '/', '@', '+', '-', ':', '_',
+        '‘', '’', '“', '”', '‗', '–'
     ];
+    public static $newlangguage = [
+        "C" => ["CH", "TR", "Ch", "Tr"],
+        "c" => ["ch", "tr", "cH", "tR"],
+        "Z" => ["D", "GI", "R", "Gi"],
+        "z" => ["d", "gi", "r", "gI"],
+        "D" => ["Đ"],
+        "d" => ["đ"],
+        "G" => ["GH", "Gh"],
+        "g" => ["gh", "gH"],
+        "F" => ["PH", "Ph"],
+        "f" => ["ph", "pH"],
+        "K" => ["C,Q"],
+        "k" => ["c,q"],
+        "Q" => ["NG", "NGH", "Ng", "NgH", "Ngh", "NGh"],
+        "q" => ["ng", "ngh", "nG", "nGh", "nGH", "ngH"],
+        "R" => [],
+        "r" => [],
+        "S" => ["X"],
+        "s" => ["x"],
+        "X" => ["KH", "Kh"],
+        "x" => ["kh", "kH"],
+        "W" => ["TH", "Th"],
+        "w" => ["TH", "tH"],
+        "N’" => ["NH", "Nh"],
+        "n’" => ["nh", "nH"]
+    ];
+
+    public static function translateVINew($string) {
+        foreach (self::$newlangguage as $key => $arr) {
+            if ($arr) {
+                foreach ($arr as $word) {
+                    $string = str_replace($word, $key, $string);
+                }
+            }
+        }
+        return $string;
+    }
 
     public static function validChar($char) {
         foreach (self::$charaters as $val) {
@@ -111,7 +149,7 @@ class String {
 
     public function isNumber($str) {
         $str = static::purify($str);
-        
+
         $len = strlen($str);
 
         $arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
