@@ -153,12 +153,33 @@ class Langguage {
     ];
     //Begin for AI
     public static $notlastconsonant = [
-        "ngh",
-        "Ngh",
-        "tr",
-        "Tr",
+        "D",
+        "d",
+        "R",
+        "r",
+        "Gi",
+        "gi",
+        "Đ",
+        "đ",
+        "Gh",
+        "gh",
+        "Ph",
+        "ph",
         "K",
         "k",
+        "Q",
+        "q",
+        "Tr",
+        "tr",
+        "Ngh",
+        "ngh",
+        "R",
+        "r",
+        "X",
+        "x",
+        "S",
+        "Th",
+        "th"
     ];
 
     public static function translateVINew($string) {
