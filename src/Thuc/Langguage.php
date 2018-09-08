@@ -151,6 +151,15 @@ class Langguage {
         "N’" => ["Nh"],
         "n’" => ["nh"]
     ];
+    //Begin for AI
+    public static $notlastconsonant = [
+        "ngh",
+        "Ngh",
+        "tr",
+        "Tr",
+        "K",
+        "k",
+    ];
 
     public static function translateVINew($string) {
         foreach (self::$newlangguage as $key => $arr) {
