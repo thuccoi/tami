@@ -125,21 +125,32 @@ class Langguage {
         "N’" => ["NH", "Nh"],
         "n’" => ["nh", "nH"]
     ];
+    
     public static $onelangguage = [
-        "D" => "Đ",
-        "d" => "đ",
-        "G" => "Gh",
-        "g" => "gh",
-        "f" => "ph",
-        "F" => "Ph",
-        "x" => "kh",
-        "X" => "Kh",
-        "w" => "th",
-        "W" => "Th",
-        "n’" => "nh",
-        "n'" => "nh",
-        "N’" => "Nh",
-        "N'" => "Nh"
+        "Z" => ["D", "R", "Gi"],
+        "z" => ["d", "gi", "r"],
+        "D" => ["Đ"],
+        "d" => ["đ"],
+        "G" => ["Gh"],
+        "g" => ["gh"],
+        "F" => ["Ph"],
+        "f" => ["ph"],
+        "K" => ["C", "Q"],
+        "k" => ["c", "q"],
+        "C" => ["Ch", "Tr"],
+        "c" => ["ch", "tr"],
+        "Q" => ["Ng", "Ngh"],
+        "q" => ["ng", "ngh",],
+        "R" => [],
+        "r" => [],
+        "S" => ["X"],
+        "s" => ["x"],
+        "X" => ["Kh"],
+        "x" => ["kh"],
+        "W" => ["Th"],
+        "w" => ["th"],
+        "N’" => ["Nh"],
+        "n’" => ["nh"]
     ];
 
     public static function translateVINew($string) {
