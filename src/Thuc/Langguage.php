@@ -123,7 +123,9 @@ class Langguage {
         "W" => ["TH", "Th"],
         "w" => ["th", "tH"],
         "N’" => ["NH", "Nh"],
-        "n’" => ["nh", "nH"]
+        "n’" => ["nh", "nH"],
+        "N'" => ["NH", "Nh"],
+        "n'" => ["nh", "nH"]
     ];
     public static $onelangguage = [
         "Z" => ["D", "R", "Gi"],
@@ -149,7 +151,9 @@ class Langguage {
         "W" => ["Th"],
         "w" => ["th"],
         "N’" => ["Nh"],
-        "n’" => ["nh"]
+        "n’" => ["nh"],
+        "N'" => ["Nh"],
+        "n'" => ["nh"]
     ];
     //Begin for AI last consonant
     public static $notlastconsonant = [
