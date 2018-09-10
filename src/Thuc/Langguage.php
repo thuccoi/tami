@@ -185,6 +185,7 @@ class Langguage {
         "Th",
         "th"
     ];
+    
     //first consonant
     public static $infirstconsonant = [
         "gh" => [

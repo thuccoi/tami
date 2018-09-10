@@ -6,6 +6,13 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 trait SchemaTrait {
 
+    /** @ODM\Field(type="date") */
+    private $deletedAt;
+
+    public function getDeletedAt() {
+        return $this->deletedAt;
+    }
+
     /**
      * 
      * @ODM\Id
