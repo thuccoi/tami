@@ -6,7 +6,7 @@ use Doctrine\ODM\MongoDB\SoftDelete\Configuration;
 use Doctrine\ODM\MongoDB\SoftDelete\SoftDeleteManager;
 use Doctrine\Common\EventManager;
 
-class RestFul {
+abstract class RestFul {
 
     public $dm;
     public $classname;
@@ -47,28 +47,15 @@ class RestFul {
                 $this->dm->clear();
                 return true;
             }
+            return false;
         } catch (\Doctrine\MongoDB\Exception $ex) {
             return false;
         }
     }
 
-    public function findBy($arr) {
-        try {
-            $arr[] = ["deletedAt" => null];
-            return $this->dm->getRepository($this->classname)->findBy($arr);
-        } catch (\Doctrine\MongoDB\Exception $ex) {
-            return [];
-        }
-    }
+    abstract protected function getOne($arr);
 
-    public function findOneBy($arr) {
-        try {
-            $arr[] = ["deletedAt" => null];
-            return $this->dm->getRepository($this->cascname)->findOneBy($arr);
-        } catch (\Doctrine\MongoDB\Exception $ex) {
-            return null;
-        }
-    }
+    abstract protected function getMany($arr);
 
     public function delete($id) {
 
