@@ -22,7 +22,7 @@ class RestFul {
         try {
             $obj = new $this->classname();
             foreach ($data as $key => $val) {
-                $obj->set{$key}($val);
+                $obj->{"set$key"}($val);
             }
             $create_at = new \MongoTimeStamp();
             $obj->setSince($create_at);
@@ -35,16 +35,20 @@ class RestFul {
     }
 
     public function update($id, $data) {
-        $obj = $this->findOneBy(["id" => $id]);
-        if ($obj) {
-            foreach ($data as $key => $val) {
-                $obj->set{$key}($val);
+        try {
+            $obj = $this->findOneBy(["id" => $id]);
+            if ($obj) {
+                foreach ($data as $key => $val) {
+                    $obj->{"set$key"}($val);
+                }
+                $update_at = new \MongoTimeStamp();
+                $obj->setLastUpdate($update_at);
+                $this->dm->persist($obj);
+                $this->dm->flush($obj);
+                $this->dm->clear();
             }
-            $update_at = new \MongoTimeStamp();
-            $obj->setLastUpdate($update_at);
-            $this->dm->persist($obj);
-            $this->dm->flush($obj);
-            $this->dm->clear();
+        } catch (\Doctrine\MongoDB\Exception $ex) {
+            return false;
         }
     }
 
