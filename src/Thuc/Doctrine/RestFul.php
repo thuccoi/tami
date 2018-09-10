@@ -18,40 +18,9 @@ abstract class RestFul {
         $this->cascading = $CascadingSoftDeleteListener;
     }
 
-    public function create($data) {
-        try {
-            $obj = new $this->classname();
-            foreach ($data as $key => $val) {
-                $obj->{"set$key"}($val);
-            }
-            $this->dm->persist($obj);
-            $this->dm->flush($obj);
-            $this->dm->clear();
-            return true;
-        } catch (\Doctrine\MongoDB\Exception $ex) {
-            return false;
-        }
-    }
+    abstract protected function create($data);
 
-    public function update($id, $data) {
-        try {
-            $obj = $this->findOneBy(["id" => $id]);
-            if ($obj) {
-                foreach ($data as $key => $val) {
-                    $obj->{"set$key"}($val);
-                }
-                $update_at = new \MongoTimeStamp();
-                $obj->setLastUpdate($update_at);
-                $this->dm->persist($obj);
-                $this->dm->flush($obj);
-                $this->dm->clear();
-                return true;
-            }
-            return false;
-        } catch (\Doctrine\MongoDB\Exception $ex) {
-            return false;
-        }
-    }
+    abstract protected function update($id, $data);
 
     abstract protected function getOne($arr);
 
