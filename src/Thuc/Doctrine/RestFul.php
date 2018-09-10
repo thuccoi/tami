@@ -8,9 +8,9 @@ use Doctrine\Common\EventManager;
 
 class RestFul {
 
-    private $dm;
-    private $classname;
-    private $cascading;
+    public $dm;
+    public $classname;
+    public $cascading;
 
     public function __construct($dm, $classname, $CascadingSoftDeleteListener) {
         $this->dm = $dm;
