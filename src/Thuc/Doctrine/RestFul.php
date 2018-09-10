@@ -10,12 +10,12 @@ class RestFul {
 
     private $dm;
     private $classname;
-    private $cascname;
+    private $CascadingSoftDeleteListener;
 
     public function __construct($dm, $classname, $CascadingSoftDeleteListener) {
         $this->dm = $dm;
         $this->classname = $classname;
-        $this->cascname = $CascadingSoftDeleteListener;
+        $this->CascadingSoftDeleteListener = $CascadingSoftDeleteListener;
     }
 
     public function create($data) {
@@ -77,7 +77,7 @@ class RestFul {
 
             $config = new Configuration();
             $evm = new EventManager();
-            $eventSubscriber = new $this->cascsoftdele();
+            $eventSubscriber = new $this->CascadingSoftDeleteListener();
             $evm->addEventSubscriber($eventSubscriber);
             $sdm = new SoftDeleteManager($this->dm, $config, $evm);
 
@@ -102,7 +102,7 @@ class RestFul {
         if ($find) {
             $config = new Configuration();
             $evm = new EventManager();
-            $eventSubscriber = new $this->cascsoftdele();
+            $eventSubscriber = new $this->CascadingSoftDeleteListener();
             $evm->addEventSubscriber($eventSubscriber);
             $sdm = new SoftDeleteManager($this->dm, $config, $evm);
 
