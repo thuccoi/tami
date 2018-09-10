@@ -10,12 +10,12 @@ class RestFul {
 
     private $dm;
     private $classname;
-    private $CascadingSoftDeleteListener;
+    private $cascading;
 
     public function __construct($dm, $classname, $CascadingSoftDeleteListener) {
         $this->dm = $dm;
         $this->classname = $classname;
-        $this->CascadingSoftDeleteListener = $CascadingSoftDeleteListener;
+        $this->cascading = $CascadingSoftDeleteListener;
     }
 
     public function create($data) {
@@ -27,6 +27,7 @@ class RestFul {
             $this->dm->persist($obj);
             $this->dm->flush($obj);
             $this->dm->clear();
+            return true;
         } catch (\Doctrine\MongoDB\Exception $ex) {
             return false;
         }
@@ -44,6 +45,7 @@ class RestFul {
                 $this->dm->persist($obj);
                 $this->dm->flush($obj);
                 $this->dm->clear();
+                return true;
             }
         } catch (\Doctrine\MongoDB\Exception $ex) {
             return false;
@@ -79,7 +81,7 @@ class RestFul {
 
             $config = new Configuration();
             $evm = new EventManager();
-            $eventSubscriber = new $this->CascadingSoftDeleteListener();
+            $eventSubscriber = new $this->cascading();
             $evm->addEventSubscriber($eventSubscriber);
             $sdm = new SoftDeleteManager($this->dm, $config, $evm);
 
@@ -104,7 +106,7 @@ class RestFul {
         if ($find) {
             $config = new Configuration();
             $evm = new EventManager();
-            $eventSubscriber = new $this->CascadingSoftDeleteListener();
+            $eventSubscriber = new $this->cascading();
             $evm->addEventSubscriber($eventSubscriber);
             $sdm = new SoftDeleteManager($this->dm, $config, $evm);
 

@@ -2,9 +2,9 @@
 
 include __DIR__ . '../../vendor/autoload.php';
 
-$array = [1, 3, 4, 5];
+
+$curl = \Thuc\Curl::call("http://tiengvietmoi.thuc/langguage/create-word", ["name" => "thuc", "type" => "success"], "GET");
 
 echo "<pre>";
-print_r(Thuc\ArrayCallback::select($array, function($e, $k) {
-            return "$e $k";
-        }));
+var_dump($curl);
+exit;
