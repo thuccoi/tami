@@ -8,11 +8,11 @@ final class Factory implements \Zend\ServiceManager\Factory\FactoryInterface {
 
         $config = $services->get('config');
 
-        if (!isset($config["view_manager"]['ENV'])) {
-            throw new \Exception('Please add the ENV in view_manager local.php');
+        if (!isset($config["environment"]['ENV'])) {
+            throw new \Exception('Please add the ENV in environment local.php');
         }
 
-        $ENV = $config["view_manager"]['ENV'];
+        $ENV = $config["environment"]['ENV'];
 
         $dm = $services->get('doctrine.documentmanager.odm_default');
 
