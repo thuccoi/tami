@@ -7,7 +7,7 @@ class ArrayCallback {
     public static function select($array, $callback) {
         $result = [];
         foreach ($array as $key => $val) {
-            $result[$key] = $callback($val, $key);
+            $result[] = $callback($val, $key);
         }
 
         return $result;
