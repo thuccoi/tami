@@ -43,4 +43,29 @@ class Code {
         return $this->sanitize($name);
     }
 
+    public function release($status = 405, $message = "Error!", $data = []) {
+        echo json_encode([
+            "status" => $status,
+            "message" => $message,
+            "data" => $data
+        ]);
+        exit;
+    }
+
+    public function error($message = "Error!", $data = []) {
+        $this->release(405, $message, $data);
+    }
+
+    public function success($message = "Success!", $data = []) {
+        $this->release(200, $message, $data);
+    }
+
+    public function notfound($message = "Not Found!", $data = []) {
+        $this->release(404, $message, $data);
+    }
+
+    public function forbidden($message = "Forbidden!", $data = []) {
+        $this->release(403, $message, $data);
+    }
+
 }
