@@ -24,8 +24,6 @@ class RestFul {
             foreach ($data as $key => $val) {
                 $obj->{"set$key"}($val);
             }
-            $create_at = new \MongoTimeStamp();
-            $obj->setSince($create_at);
             $this->dm->persist($obj);
             $this->dm->flush($obj);
             $this->dm->clear();
