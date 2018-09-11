@@ -73,6 +73,8 @@ class Langguage {
         ' ', '   ', '.', ',', '/', '@', '+', '-', ':', '_',
         '‘', '’', '“', '”', '‗', '–'
     ];
+    public static $firstword = ['(', '[', '{', '<', '?', '!', '\'', '"', '‘', '“'];
+    public static $lastword = [',', '.', ';', ')', ']', '}', '>', '?', '!', '\n', '\'', '"', '’', '”'];
     public static $vowellangguage = [
         'a', 'á', 'à', 'ả', 'ã', 'ạ',
         'A', 'Á', 'À', 'Ả', 'Ã', 'Ạ',
@@ -185,7 +187,6 @@ class Langguage {
         "Th",
         "th"
     ];
-    
     //first consonant
     public static $infirstconsonant = [
         "gh" => [
