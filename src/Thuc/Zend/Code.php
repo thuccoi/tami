@@ -31,6 +31,25 @@ class Code {
         return \Thuc\Langguage::purify($string);
     }
 
+    public function arr($name) {
+        $arr = $this->controller->params()->fromPost($name);
+        $result = \Thuc\ArrayCallback::select($arr, function($e) {
+
+                    if (is_array($e) || is_object($e)) {
+                        $ne = [];
+                        foreach ($e as $k => $v) {
+                            $ne[\Thuc\Langguage::purify($k)] = \Thuc\Langguage::purify($v);
+                        }
+                        $e = $ne;
+                    } else {
+                        $e = \Thuc\Langguage::purify($e);
+                    }
+
+                    return $e;
+                });
+        return $result;
+    }
+
     public function get($name) {
         return $this->sanitize($name, self::$GET);
     }
