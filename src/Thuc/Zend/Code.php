@@ -34,11 +34,20 @@ class Code {
     public function arr($name) {
         $arr = $this->controller->params()->fromPost($name);
         $result = \Thuc\ArrayCallback::select($arr, function($e) {
-
+                    //level 1
                     if (is_array($e) || is_object($e)) {
                         $ne = [];
                         foreach ($e as $k => $v) {
-                            $ne[\Thuc\Langguage::purify($k)] = \Thuc\Langguage::purify($v);
+                            //level 2
+                            if (is_array($v) || is_object($v)) {
+                                $newv = [];
+                                foreach ($v as $kk => $vv) {
+                                    $newv[\Thuc\Langguage::purify($kk)] = \Thuc\Langguage::purify($vv);
+                                }
+                                $ne[\Thuc\Langguage::purify($k)] = $newv;
+                            } else {
+                                $ne[\Thuc\Langguage::purify($k)] = \Thuc\Langguage::purify($v);
+                            }
                         }
                         $e = $ne;
                     } else {
