@@ -38,6 +38,10 @@ trait SchemaTrait {
     private $last_update;
 
     public function __construct() {
+        $this->construct();
+    }
+
+    protected function construct() {
         $this->data = [];
         $this->since = new \MongoTimestamp(time());
         $this->last_update = new \MongoTimestamp(time());
