@@ -22,8 +22,7 @@ namespace Thuc\Google;
  *
  * @license MIT
  * */
-
-class GoogleCustomSearch {
+class Search {
 
     /**
      * Google Search Engine ID
