@@ -6,19 +6,22 @@ class ArrayCallback {
 
     public static function select($array, $callback) {
         $result = [];
-        foreach ($array as $key => $val) {
-            $result[] = $callback($val, $key);
+        if (is_array($array) || is_object($array)) {
+            foreach ($array as $key => $val) {
+                $result[] = $callback($val, $key);
+            }
         }
-
         return $result;
     }
 
     public static function filter($array, $callback) {
         $result = [];
-        foreach ($array as $key => $val) {
-            $nval = $callback($val, $key);
-            if ($nval) {
-                $result[] = $val;
+        if (is_array($array) || is_object($array)) {
+            foreach ($array as $key => $val) {
+                $nval = $callback($val, $key);
+                if ($nval) {
+                    $result[] = $val;
+                }
             }
         }
 
@@ -26,9 +29,11 @@ class ArrayCallback {
     }
 
     public static function find($array, $element, $callback) {
-        foreach ($array as $key => $obj) {
-            if ($callback($obj, $element, $key)) {
-                return $obj;
+        if (is_array($array) || is_object($array)) {
+            foreach ($array as $key => $obj) {
+                if ($callback($obj, $element, $key)) {
+                    return $obj;
+                }
             }
         }
 
@@ -40,9 +45,11 @@ class ArrayCallback {
             return static::find($array, $id, $callback);
         }
 
-        foreach ($array as $key => $obj) {
-            if ($obj->id == $id) {
-                return $obj;
+        if (is_array($array) || is_object($array)) {
+            foreach ($array as $key => $obj) {
+                if ($obj->id == $id) {
+                    return $obj;
+                }
             }
         }
 
@@ -51,10 +58,13 @@ class ArrayCallback {
 
     public static function render($array, $callback) {
         $html = '';
-        foreach ($array as $key => $val) {
-            $html .= $callback($val, $key);
+        
+        if (is_array($array) || is_object($array)) {
+            foreach ($array as $key => $val) {
+                $html .= $callback($val, $key);
+            }
         }
-
+        
         return $html;
     }
 
