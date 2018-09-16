@@ -11,5 +11,9 @@
             "Thuc": "src/"
         }  
     },
-    "require": {}
+    "require": {
+        "google/apiclient": "^2.0",
+        "doctrine/doctrine-mongo-odm-module": "dev-master",
+        "doctrine/mongodb-odm-softdelete": "dev-master"
+    }
 }
