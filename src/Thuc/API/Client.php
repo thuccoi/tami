@@ -47,7 +47,7 @@ class Client {
         return "";
     }
 
-    public function verifyRespone() {
+    public static function verifyRespone() {
 
         // empty response
         $response = null;
