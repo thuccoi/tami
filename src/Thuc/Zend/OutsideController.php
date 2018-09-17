@@ -37,11 +37,6 @@ class OutsideController extends AbstractActionController {
         $response = parent::onDispatch($e);
         $this->layout()->setTemplate('outside/layout');
 
-        $sessionOauth = new Container('oauth');
-        if ($sessionOauth->offsetExists("viewer")) {
-            return $this->redirect()->toRoute("admin", ["action" => "tong-quan"]);
-        }
-
         return $response;
     }
 
