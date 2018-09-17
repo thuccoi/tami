@@ -180,40 +180,30 @@ class OutsideController extends AbstractActionController {
     }
 
     public function lostPasswordAction() {
-        if (!$this->code->verifyRespone()) {
-            $this->code->releaseError("Bạn hãy xác nhận mình không phải là robot, tự động tạo tài khoản trước.");
+        if (!\Thuc\API\Client::verifyRespone()) {
+            $this->code->error("Bạn hãy xác nhận mình không phải là robot, tự động tạo tài khoản trước.");
         }
 
-        $email = $this->code->getEmail("email");
+        $email = $this->code->post("email");
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
-            $token = \Application\Core\Client::generateToken();
+            $token = \Thuc\API\Client::generateToken();
 
             if (!$token) {
-                $this->code->releaseError("Đã có lỗi xãy ra với máy chủ");
+                $this->code->error("Đã có lỗi xãy ra với máy chủ");
             }
 
-            $sessionOauth = new Container('oauth');
-            $sessionOauth->offsetSet("token", $token);
+            //send email verify
+            $subject = "Khôi phục mật khẩu mới";
+            $body = APP_URL . "/a/dat-mat-khau/{$email}?token={$token}";
 
-            $viewer = \Application\Core\Client::getUser($email);
-            if ($viewer) {
+            $verify = new \Thuc\Mail($subject, $body, $email);
+            $verify->send();
 
-                //send email verify
-                $subject = "Khôi phục mật khẩu mới";
-                $body = APP_URL . "/a/dat-mat-khau/{$email}?token={$viewer->token}";
-
-                $verify = new \Application\Model\Mail($subject, $body, $email);
-                @$verify->send();
-
-                $this->code->releaseSuccess("Bạn hãy vào email để thực hiện khôi phục mật khẩu");
-            } else {
-
-                $this->code->releaseError("Đã có lỗi xãy ra");
-            }
+            $this->code->success("Bạn hãy vào email để thực hiện khôi phục mật khẩu");
         }
 
-        $this->code->releaseError("Bạn hãy điền email của mình để khôi phục mật khẩu.");
+        $this->code->error("Bạn hãy điền email của mình để khôi phục mật khẩu.");
     }
 
     public function verifyAction() {
@@ -237,18 +227,27 @@ class OutsideController extends AbstractActionController {
         $email = $this->code->post("email");
         $password = $this->code->post("password");
 
+        $incorrect = false;
         if (filter_var($email, FILTER_VALIDATE_EMAIL) && $password) {
 
-            $result = \Thuc\API\Client::login($email, $password);
+            $result = \System\Query\Client::login($email, $password);
 
-            if ($result == true) {
-                $this->code->releaseSuccess("Đăng nhập thành công");
+            if ($result === true) {
+                $this->sessionContainer->email = $email;
             } else {
-                $this->code->releaseError("Thông tin tài khoản không chính xác.");
+                $incorrect = true;
             }
+        } else {
+            $incorrect = true;
         }
 
-        $this->code->releaseError("Bạn hãy điền đầy đủ thông tin, để thực hiện đăng nhập.");
+        if ($incorrect === true) {
+            echo "Thông tin đăng nhập không đúng";
+            exit;
+        }
+
+
+        return $this->redirect()->toRoute("outside", ["action" => "dang-nhap"]);
     }
 
     public function registerAction() {
