@@ -30,13 +30,6 @@ trait ModuleTrait {
 ////            unset($sessionContainer->myVar);
 //        }
 
-
-        $eventManager = $application->getEventManager()->getSharedManager();
-        $eventManager->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function($event) use($sessionContainer) {
-            $controller = $event->getTarget();
-            $controller->setSession($sessionContainer);
-        });
-
 //        if (isset($sessionContainer->myVar))
 //            $myVar = $sessionContainer->myVar;
 //        else
