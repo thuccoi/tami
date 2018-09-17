@@ -227,7 +227,6 @@ class OutsideController extends AbstractActionController {
 
             echo "<pre>";
             print_r($userData);
-            print_r($sessionContainer->email);
             exit;
         }
 

@@ -24,6 +24,10 @@ trait ModuleTrait {
 
         $event->setParam('sessionContainer', $sessionContainer);
 
+        if (isset($serviceManager->email)) {
+            echo $serviceManager->email;
+        }
+        
 //        if (!isset($sessionContainer->myVar)) {
 //            $sessionContainer->myVar = 'Some data';
 ////            unset($sessionContainer->myVar);
