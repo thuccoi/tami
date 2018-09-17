@@ -2,9 +2,6 @@
 
 namespace Thuc\Zend;
 
-use Zend\Session\SessionManager;
-use Zend\Session\Container;
-
 final class Factory implements \Zend\ServiceManager\Factory\FactoryInterface {
 
     public function __invoke(\Interop\Container\ContainerInterface $services, $requestedName, array $options = null) {
@@ -19,12 +16,8 @@ final class Factory implements \Zend\ServiceManager\Factory\FactoryInterface {
 
         $dm = $services->get('doctrine.documentmanager.odm_default');
 
-        $sessionManager = $services->get(SessionManager::class);
-        
-        // We assume that $sessionManager variable is an instance of the session manager.
-        $sessionContainer = new Container('ContainerNamespace', $sessionManager);
 
-        return new $requestedName($dm, $ENV, $sessionContainer);
+        return new $requestedName($dm, $ENV);
     }
 
 }
