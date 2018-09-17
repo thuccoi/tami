@@ -2,6 +2,8 @@
 
 namespace Thuc\Zend;
 
+use Zend\Mvc\MvcEvent;
+
 Trait ControllerTrait {
 
     protected $dm;
@@ -17,7 +19,9 @@ Trait ControllerTrait {
         $this->dm = $dm;
         $this->code = new \Thuc\Zend\Code($this);
         $this->ENV = $ENV;
+    }
 
+    protected function dispatch(MvcEvent $e) {
         $this->sessionManager = $this->getEvent()->getParam('sessionContainer', false);
     }
 

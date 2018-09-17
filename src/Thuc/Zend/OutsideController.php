@@ -35,7 +35,11 @@ class OutsideController extends AbstractActionController {
     function onDispatch(MvcEvent $e) {
 
         $response = parent::onDispatch($e);
+        
+        $this->dispatch($e);
+        
         $this->layout()->setTemplate('outside/layout');
+
 
         return $response;
     }
