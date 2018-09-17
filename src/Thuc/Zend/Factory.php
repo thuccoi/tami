@@ -16,8 +16,10 @@ final class Factory implements \Zend\ServiceManager\Factory\FactoryInterface {
 
         $dm = $services->get('doctrine.documentmanager.odm_default');
 
+        $sessionManager = $services->get(SessionManager::class);
+        $sessionContainer = new Container('thuc', $sessionManager);
 
-        return new $requestedName($dm, $ENV);
+        return new $requestedName($dm, $ENV, $sessionContainer);
     }
 
 }

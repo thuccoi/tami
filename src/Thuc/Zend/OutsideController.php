@@ -13,9 +13,9 @@ class OutsideController extends AbstractActionController {
 
     private $client;
 
-    public function __construct($dm, $ENV) {
+    public function __construct($dm, $ENV, $sessionContainer) {
 
-        $this->construct($dm, $ENV);
+        $this->construct($dm, $ENV, $sessionContainer);
 
         $this->client = new \Google_Client();
         $this->client->setAuthConfig(ROOT_DIR . '/public/client_secret.json');
@@ -222,11 +222,11 @@ class OutsideController extends AbstractActionController {
 
             $email = $userData->getEmail();
 
-            $sessionContainer = $this->getEvent()->getParam('sessionContainer', false);
-            $sessionContainer->email = $email;
+            $this->sessionContainer->email = $email;
 
             echo "<pre>";
             print_r($userData);
+            print_r($this->sessionContainer);
             exit;
         }
 
