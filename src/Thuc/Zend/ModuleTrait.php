@@ -23,11 +23,19 @@ trait ModuleTrait {
         // We assume that $sessionManager variable is an instance of the session manager.
         $sessionContainer = new Container('ContainerNamespace', $sessionManager);
 
-        if (!isset($sessionContainer->myVar)) {
-            $sessionContainer->myVar = 'Some data';
-//            unset($sessionContainer->myVar);
-        }
+        $event->setParam('sessionContainer', $sessionContainer);
 
+//        if (!isset($sessionContainer->myVar)) {
+//            $sessionContainer->myVar = 'Some data';
+////            unset($sessionContainer->myVar);
+//        }
+
+
+        $eventManager = $application->getEventManager()->getSharedManager();
+        $eventManager->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function($event) use($sessionContainer) {
+            $controller = $event->getTarget();
+            $controller->setSessionContainer($sessionContainer);
+        });
 
 //        if (isset($sessionContainer->myVar))
 //            $myVar = $sessionContainer->myVar;
