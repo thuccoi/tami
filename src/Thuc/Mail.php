@@ -70,7 +70,7 @@ class Mail {
 
         $message = new \Zend\Mail\Message();
         $message->setBody($this->body);
-        $message->setFrom($this->username);
+        $message->setFrom(static::$username);
 
         foreach ($this->arrto as $to) {
             $message->addTo($to);

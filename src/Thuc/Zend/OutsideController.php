@@ -180,14 +180,14 @@ class OutsideController extends AbstractActionController {
     }
 
     public function lostPasswordAction() {
-        if (!\Thuc\API\Client::verifyRespone()) {
+        if (!Client::verifyRespone()) {
             $this->code->error("Bạn hãy xác nhận mình không phải là robot, tự động tạo tài khoản trước.");
         }
 
         $email = $this->code->post("email");
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
-            $token = \Thuc\API\Client::generateToken();
+            $token = Client::generateToken();
 
             if (!$token) {
                 $this->code->error("Đã có lỗi xãy ra với máy chủ");
@@ -197,7 +197,7 @@ class OutsideController extends AbstractActionController {
             $subject = "Khôi phục mật khẩu mới";
             $body = APP_URL . "/a/dat-mat-khau/{$email}?token={$token}";
 
-            $verify = new \Thuc\Mail($subject, $body, $email);
+            $verify = new Mail($subject, $body, $email);
             $verify->send();
 
             $this->code->success("Bạn hãy vào email để thực hiện khôi phục mật khẩu");
