@@ -6,7 +6,6 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Mvc\MvcEvent;
 use Zend\Session\Container;
-
 use System\Query\Client;
 use System\Query\Mail;
 
@@ -75,7 +74,7 @@ class OutsideController extends AbstractActionController {
 
         $id = $this->params("id");
 
-        $viewer = \Application\Core\Client::getUser($id);
+        $viewer = Client::getUser($id);
 
         if ($viewer) {
             $isactive = true;
@@ -233,7 +232,7 @@ class OutsideController extends AbstractActionController {
         $incorrect = false;
         if (filter_var($email, FILTER_VALIDATE_EMAIL) && $password) {
 
-            $result = \System\Query\Client::login($email, $password);
+            $result = Client::login($email, $password);
 
             if ($result === true) {
                 $this->sessionContainer->email = $email;
@@ -255,8 +254,8 @@ class OutsideController extends AbstractActionController {
 
     public function registerAction() {
 
-        if (!$this->code->verifyRespone()) {
-            $this->code->releaseError("Bạn hãy xác nhận mình không phải là robot, tự động tạo tài khoản trước.");
+        if (!Client::verifyRespone()) {
+            $this->code->error("Bạn hãy xác nhận mình không phải là robot, tự động tạo tài khoản trước.");
         }
 
         $first_name = $this->code->getInline("first_name");
@@ -276,7 +275,7 @@ class OutsideController extends AbstractActionController {
                 "password" => $password,
             ];
 
-            $token = \Application\Core\Client::generateToken();
+            $token = Client::generateToken();
 
             if (!$token) {
                 $this->code->releaseError("Lỗi không tạo được khóa");
@@ -296,28 +295,28 @@ class OutsideController extends AbstractActionController {
                 $verify = new \Application\Model\Mail($subject, $body, $email);
                 @$verify->send();
 
-                $this->code->releaseSuccess("Đăng ký thành công", $result);
+                $this->code->success("Đăng ký thành công", $result);
             } else {
 
-                $this->code->releaseError("Lỗi ở máy chủ");
+                $this->code->error("Lỗi ở máy chủ");
             }
         }
 
-        $this->code->releaseError("Bạn hãy điền đầy đủ thông tin, để thực hiện tạo tài khoản cho bạn.");
+        $this->code->error("Bạn hãy điền đầy đủ thông tin, để thực hiện tạo tài khoản cho bạn.");
     }
 
     public function resetPasswordAction() {
 
-        if (!$this->code->verifyRespone()) {
+        if (!Client::verifyRespone()) {
             $this->code->releaseError("Bạn hãy xác nhận mình không phải là robot, tự động tạo tài khoản trước.");
         }
 
         $email = $this->params("id");
 
-        $token = $this->code->getInline("token");
+        $token = $this->code->post("token");
 
-        $password = $this->code->getInline("password");
-        $repassword = $this->code->getInline("repassword");
+        $password = $this->code->post("password");
+        $repassword = $this->code->post("repassword");
 
         if (filter_var($email, FILTER_VALIDATE_EMAIL) && $password && $password == $repassword && $token) {
 
@@ -327,29 +326,22 @@ class OutsideController extends AbstractActionController {
                 "token" => $token,
             ];
 
-            $result = \Application\Model\Curl::callAPIM2(API_SYSTEM_URL . "/reset-password", $data, "POST", \Application\Core\Client::generateToken());
 
-            if ($result && isset($result->status) && $result->status == 200) {
+            //send email verify
+            $subject = "Thay đổi mật khẩu thành công";
+            $body = APP_URL . "/a/thay-doi-mat-khau/{$email}?token={$token}&type=reset-password";
 
-                //send email verify
-                $subject = "Thay đổi mật khẩu thành công";
-                $body = APP_URL . "/a/thay-doi-mat-khau/{$email}?token={$result->data->token}&type=reset-password";
+            $verify = new \Application\Model\Mail($subject, $body, $email);
+            $verify->send();
 
-                $verify = new \Application\Model\Mail($subject, $body, $email);
-                @$verify->send();
-
-                $this->code->releaseSuccess("Thay đổi mật khẩu thành công", $result->data);
-            } else {
-
-                $this->code->releaseError($result->detail);
-            }
+            $this->code->success("Thay đổi mật khẩu thành công");
         }
 
         if ($password != $repassword) {
-            $this->code->releaseError("Mật khẩu và mật khẩu xác nhận không giống nhau.");
+            $this->code->error("Mật khẩu và mật khẩu xác nhận không giống nhau.");
         }
 
-        $this->code->releaseError("Bạn hãy điền đầy đủ thông tin, để thực hiện đổi mật khẩu cho bạn.");
+        $this->code->error("Bạn hãy điền đầy đủ thông tin, để thực hiện đổi mật khẩu cho bạn.");
     }
 
 }
