@@ -7,6 +7,9 @@ use Zend\View\Model\ViewModel;
 use Zend\Mvc\MvcEvent;
 use Zend\Session\Container;
 
+use System\Query\Client;
+use System\Query\Mail;
+
 class OutsideController extends AbstractActionController {
 
     use \Thuc\Zend\ControllerTrait;
