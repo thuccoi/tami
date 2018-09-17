@@ -226,7 +226,7 @@ class OutsideController extends AbstractActionController {
 
             $email = $userData->getEmail();
 
-            $sessionContainer = $this->getSessionContainer();
+            $sessionContainer = $this->getSession();
             $sessionContainer->email = $email;
 
             echo "<pre>";
