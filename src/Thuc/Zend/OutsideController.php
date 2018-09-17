@@ -38,6 +38,10 @@ class OutsideController extends AbstractActionController {
 
         $this->layout()->setTemplate('outside/layout');
 
+        if ($this->sessionContainer && isset($this->sessionContainer->email)) {
+            return $this->redirect()->toRoute("langguage");
+        }
+
         return $response;
     }
 
@@ -223,11 +227,6 @@ class OutsideController extends AbstractActionController {
             $email = $userData->getEmail();
 
             $this->sessionContainer->email = $email;
-
-            echo "<pre>";
-            print_r($userData);
-            print_r($this->sessionContainer);
-            exit;
         }
 
         return $this->redirect()->toRoute("outside", ["action" => "dang-nhap"]);
@@ -235,12 +234,12 @@ class OutsideController extends AbstractActionController {
 
     public function loginAction() {
 
-        $email = $this->code->getEmail("email");
-        $password = $this->code->getInline("password");
+        $email = $this->code->post("email");
+        $password = $this->code->post("password");
 
         if (filter_var($email, FILTER_VALIDATE_EMAIL) && $password) {
 
-            $result = \Application\Core\Client::login($email, $password);
+            $result = \Thuc\API\Client::login($email, $password);
 
             if ($result == true) {
                 $this->code->releaseSuccess("Đăng nhập thành công");
