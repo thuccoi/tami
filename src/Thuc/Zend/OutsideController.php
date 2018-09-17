@@ -281,25 +281,16 @@ class OutsideController extends AbstractActionController {
                 $this->code->releaseError("Lỗi không tạo được khóa");
             }
 
-            $sessionOauth = new Container('oauth');
-            $sessionOauth->offsetSet("token", $token);
 
-            $result = \Application\Model\Restful::Post(API_SYSTEM_URL . "/users", $data);
 
-            if ($result) {
+            //send email verify
+            $subject = "Kích hoạt tài khoản";
+            $body = APP_URL . "/a/kich-hoat/{$email}?token={$token}";
 
-                //send email verify
-                $subject = "Kích hoạt tài khoản";
-                $body = APP_URL . "/a/kich-hoat/{$email}?token={$result->token}";
+            $verify = new Mail($subject, $body, $email);
+            $verify->send();
 
-                $verify = new \Application\Model\Mail($subject, $body, $email);
-                @$verify->send();
-
-                $this->code->success("Đăng ký thành công", $result);
-            } else {
-
-                $this->code->error("Lỗi ở máy chủ");
-            }
+            $this->code->success("Đăng ký thành công");
         }
 
         $this->code->error("Bạn hãy điền đầy đủ thông tin, để thực hiện tạo tài khoản cho bạn.");
