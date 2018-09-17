@@ -5,7 +5,7 @@ namespace Thuc\Zend;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Mvc\MvcEvent;
-use Zend\Session\Container;
+
 use System\Query\Client;
 use System\Query\Mail;
 
@@ -72,30 +72,25 @@ class OutsideController extends AbstractActionController {
 
     public function xacNhanAction() {
 
-        $id = $this->params("id");
+        $id = $this->code->param("id");
 
-        $viewer = Client::getUser($id);
 
-        if ($viewer) {
-            $isactive = true;
-            if ($viewer->status != \Application\Oauth\User::$isActive) {
-                $isactive = false;
-            }
+        $isactive = true;
+        
+        return new ViewModel([
+            "id" => $id,
+            "isactive" => $isactive
+        ]);
 
-            return new ViewModel([
-                "id" => $id,
-                "isactive" => $isactive
-            ]);
-        }
 
         return $this->redirect()->toRoute("outside", ["action" => "dang-nhap"]);
     }
 
     public function kichHoatAction() {
 
-        $id = $this->params("id");
+        $id = $this->code->param("id");
 
-        $token = $this->params()->fromQuery("token");
+        $token = $this->code->get("token");
 
         if (!$id || !$token) {
             return $this->redirect()->toRoute("outside", ["action" => "dang-nhap"]);
@@ -106,23 +101,12 @@ class OutsideController extends AbstractActionController {
             "token" => $token
         ];
 
-        $result = \Application\Model\Curl::callAPIM2(API_SYSTEM_URL . "/activate-user", $data, "POST", \Application\Core\Client::generateToken());
+        return new ViewModel([
+            "id" => $id,
+            "activate" => TRUE,
+            "message" => "Kích hoạt thành công"
+        ]);
 
-        if ($result && isset($result->status) && $result->status == 200) {
-            return new ViewModel([
-                "id" => $id,
-                "activate" => TRUE,
-                "message" => $result->detail
-            ]);
-        }
-
-        if ($result) {
-            return new ViewModel([
-                "id" => $id,
-                "activate" => FALSE,
-                "message" => $result->detail
-            ]);
-        }
 
 
         return $this->redirect()->toRoute("outside", ["action" => "dang-nhap"]);
@@ -130,9 +114,9 @@ class OutsideController extends AbstractActionController {
 
     public function datMatKhauAction() {
 
-        $id = $this->params("id");
+        $id = $this->code->param("id");
 
-        $token = $this->params()->fromQuery("token");
+        $token = $this->code->get("token");
 
         if (!$id || !$token) {
             return $this->redirect()->toRoute("outside", ["action" => "dang-nhap"]);
@@ -156,10 +140,10 @@ class OutsideController extends AbstractActionController {
 
     public function thayDoiMatKhauAction() {
 
-        $id = $this->params("id");
+        $id = $this->code->param("id");
 
-        $token = $this->params()->fromQuery("token");
-        $type = $this->params()->fromQuery("type");
+        $token = $this->code->get("token");
+        $type = $this->code->get("type");
 
         if (!$id || !$token) {
             return $this->redirect()->toRoute("outside", ["action" => "dang-nhap"]);
@@ -302,7 +286,7 @@ class OutsideController extends AbstractActionController {
             $this->code->error("Bạn hãy xác nhận mình không phải là robot, tự động tạo tài khoản trước.");
         }
 
-        $email = $this->params("id");
+        $email = $this->code->param("id");
 
         $token = $this->code->post("token");
 
