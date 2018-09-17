@@ -2,6 +2,9 @@
 
 namespace Thuc\Zend;
 
+use Zend\Session\SessionManager;
+use Zend\Session\Container;
+
 final class Factory implements \Zend\ServiceManager\Factory\FactoryInterface {
 
     public function __invoke(\Interop\Container\ContainerInterface $services, $requestedName, array $options = null) {
