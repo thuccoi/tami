@@ -182,7 +182,7 @@ class OutsideController extends AbstractActionController {
     }
 
     public function lostPasswordAction() {
-        if (!Client::verifyRespone()) {
+        if (!Client::verifyRespone($this->ENV)) {
             $this->code->error("Bạn hãy xác nhận mình không phải là robot, tự động tạo tài khoản trước.");
         }
 
@@ -254,16 +254,16 @@ class OutsideController extends AbstractActionController {
 
     public function registerAction() {
 
-        if (!Client::verifyRespone()) {
+        if (!Client::verifyRespone($this->ENV)) {
             $this->code->error("Bạn hãy xác nhận mình không phải là robot, tự động tạo tài khoản trước.");
         }
 
-        $first_name = $this->code->getInline("first_name");
-        $last_name = $this->code->getInline("last_name");
-        $phone = $this->code->getInline("phone");
-        $email = $this->code->getEmail("email");
-        $password = $this->code->getInline("password");
-        $repassword = $this->code->getInline("repassword");
+        $first_name = $this->code->post("first_name");
+        $last_name = $this->code->post("last_name");
+        $phone = $this->code->post("phone");
+        $email = $this->code->post("email");
+        $password = $this->code->post("password");
+        $repassword = $this->code->post("repassword");
 
         if (filter_var($email, FILTER_VALIDATE_EMAIL) && $password && $password == $repassword) {
 
@@ -307,8 +307,8 @@ class OutsideController extends AbstractActionController {
 
     public function resetPasswordAction() {
 
-        if (!Client::verifyRespone()) {
-            $this->code->releaseError("Bạn hãy xác nhận mình không phải là robot, tự động tạo tài khoản trước.");
+        if (!Client::verifyRespone($this->ENV)) {
+            $this->code->error("Bạn hãy xác nhận mình không phải là robot, tự động tạo tài khoản trước.");
         }
 
         $email = $this->params("id");
@@ -331,7 +331,7 @@ class OutsideController extends AbstractActionController {
             $subject = "Thay đổi mật khẩu thành công";
             $body = APP_URL . "/a/thay-doi-mat-khau/{$email}?token={$token}&type=reset-password";
 
-            $verify = new \Application\Model\Mail($subject, $body, $email);
+            $verify = new Mail($subject, $body, $email);
             $verify->send();
 
             $this->code->success("Thay đổi mật khẩu thành công");
