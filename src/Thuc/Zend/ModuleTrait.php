@@ -15,7 +15,6 @@ trait ModuleTrait {
     public function bootstrap(MvcEvent $event) {
         $application = $event->getApplication();
         $serviceManager = $application->getServiceManager();
-
         // The following line instantiates the SessionManager and automatically
         // makes the SessionManager the 'default' one.
         $sessionManager = $serviceManager->get(SessionManager::class);
