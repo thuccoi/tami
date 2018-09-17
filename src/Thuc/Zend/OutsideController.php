@@ -12,7 +12,6 @@ class OutsideController extends AbstractActionController {
     use \Thuc\Zend\ControllerTrait;
 
     private $client;
-    protected $sessionManager;
 
     public function __construct($dm, $ENV) {
 
@@ -37,9 +36,7 @@ class OutsideController extends AbstractActionController {
 
         $response = parent::onDispatch($e);
 
-        $this->sessionManager = $this->getEvent()->getParam('sessionContainer', false);
         $this->layout()->setTemplate('outside/layout');
-
 
         return $response;
     }
@@ -225,6 +222,7 @@ class OutsideController extends AbstractActionController {
 
             $email = $userData->getEmail();
 
+            $this->sessionContainer = $this->getEvent()->getParam('sessionContainer', false);
             $this->sessionContainer->email = $email;
 
             echo "<pre>";
