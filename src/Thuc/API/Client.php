@@ -41,8 +41,7 @@ class Client {
         );
 
         if ($gen && isset($gen["access_token"])) {
-
-            return "Bearer " . $gen["access_token"];
+            return $gen["access_token"];
         }
 
         return "";
