@@ -17,4 +17,7 @@ Trait ControllerTrait {
         $this->code = new \Thuc\Zend\Code($this);
         $this->ENV = $ENV;
     }
+    
+    
+    
 }
