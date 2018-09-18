@@ -20,7 +20,7 @@ class User implements SoftDeleteable {
 
     /**
      * 
-     * @ODM\Id(strategy="NONE")
+     * @ODM\Id
      */
     private $id;
 
@@ -110,7 +110,7 @@ class User implements SoftDeleteable {
         $this->construct();
     }
 
-    protected function construct(){
+    protected function construct() {
         $this->status = 0;
 
         $this->client_id = static::$client_id;
@@ -126,7 +126,7 @@ class User implements SoftDeleteable {
         return $this->id;
     }
 
-    public function setId($id) {
+    public function setId(\MongoId $id) {
         $this->id = $id;
         return $this;
     }

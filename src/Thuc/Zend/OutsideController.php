@@ -11,6 +11,7 @@ class OutsideController extends AbstractActionController {
     use \Thuc\Zend\ControllerTrait;
 
     private $client;
+    private $user;
 
     public function __construct($dm, $ENV, $sessionContainer, $config) {
 
@@ -28,6 +29,8 @@ class OutsideController extends AbstractActionController {
         $this->client->setRedirectUri(APP_URL . '/a/verify');
         $this->client->setAccessType('offline');        // offline access
         $this->client->setIncludeGrantedScopes(true);   // incremental auth
+        //user object
+        $this->user = new \Thuc\Query\User($this->dm);
     }
 
     //set layout
@@ -262,15 +265,23 @@ class OutsideController extends AbstractActionController {
                 $this->code->releaseError("Lỗi không tạo được khóa");
             }
 
+            $data["token"] = $token;
 
-            //send email verify
-            $subject = "Kích hoạt tài khoản";
-            $body = APP_URL . "/a/kich-hoat/{$email}?token={$token}";
+            $query = $this->user->create($data);
 
-            $verify = new \Thuc\Mail($this->config["mail"]["username"], $this->config["mail"]["password"], $subject, $body, $email);
-            $verify->send();
+            if ($query->status == 200) {
 
-            $this->code->success("Đăng ký thành công");
+                //send email verify
+                $subject = "Kích hoạt tài khoản";
+                $body = APP_URL . "/a/kich-hoat/{$email}?token={$token}";
+
+                $verify = new \Thuc\Mail($this->config["mail"]["username"], $this->config["mail"]["password"], $subject, $body, $email);
+                $verify->send();
+
+                $this->code->success($query->message);
+            } else {
+                $this->code->error($query->message);
+            }
         }
 
         $this->code->error("Bạn hãy điền đầy đủ thông tin, để thực hiện tạo tài khoản cho bạn.");
