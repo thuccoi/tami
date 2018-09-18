@@ -6,18 +6,15 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Mvc\MvcEvent;
 
-use System\Query\Client;
-use System\Query\Mail;
-
 class OutsideController extends AbstractActionController {
 
     use \Thuc\Zend\ControllerTrait;
 
     private $client;
 
-    public function __construct($dm, $ENV, $sessionContainer) {
+    public function __construct($dm, $ENV, $sessionContainer, $config) {
 
-        $this->construct($dm, $ENV, $sessionContainer);
+        $this->construct($dm, $ENV, $sessionContainer, $config);
 
         $this->client = new \Google_Client();
         $this->client->setAuthConfig(ROOT_DIR . '/public/client_secret.json');
@@ -76,7 +73,7 @@ class OutsideController extends AbstractActionController {
 
 
         $isactive = true;
-        
+
         return new ViewModel([
             "id" => $id,
             "isactive" => $isactive
@@ -166,14 +163,14 @@ class OutsideController extends AbstractActionController {
     }
 
     public function lostPasswordAction() {
-        if (!Client::verifyRespone($this->ENV)) {
+        if (!\Thuc\API\Client::verifyRespone($this->ENV, $this->config["google"]["capcha_secret"])) {
             $this->code->error("Bạn hãy xác nhận mình không phải là robot, tự động tạo tài khoản trước.");
         }
 
         $email = $this->code->post("email");
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
-            $token = Client::generateToken();
+            $token = \Thuc\API\Client::generateToken($this->config["google"]["client_id"], $this->config["google"]["client_secret"]);
 
             if (!$token) {
                 $this->code->error("Đã có lỗi xãy ra với máy chủ");
@@ -183,7 +180,7 @@ class OutsideController extends AbstractActionController {
             $subject = "Khôi phục mật khẩu mới";
             $body = APP_URL . "/a/dat-mat-khau/{$email}?token={$token}";
 
-            $verify = new Mail($subject, $body, $email);
+            $verify = new \Thuc\Mail($this->config["mail"]["username"], $this->config["mail"]["password"], $subject, $body, $email);
             $verify->send();
 
             $this->code->success("Bạn hãy vào email để thực hiện khôi phục mật khẩu");
@@ -216,7 +213,7 @@ class OutsideController extends AbstractActionController {
         $incorrect = false;
         if (filter_var($email, FILTER_VALIDATE_EMAIL) && $password) {
 
-            $result = Client::login($email, $password);
+            $result = \Thuc\API\Client::login($email, $password, $this->config["google"]["client_id"], $this->config["google"]["client_secret"]);
 
             if ($result === true) {
                 $this->sessionContainer->email = $email;
@@ -238,7 +235,7 @@ class OutsideController extends AbstractActionController {
 
     public function registerAction() {
 
-        if (!Client::verifyRespone($this->ENV)) {
+        if (!\Thuc\API\Client::verifyRespone($this->ENV, $this->config["google"]['capcha_secret'])) {
             $this->code->error("Bạn hãy xác nhận mình không phải là robot, tự động tạo tài khoản trước.");
         }
 
@@ -259,7 +256,7 @@ class OutsideController extends AbstractActionController {
                 "password" => $password,
             ];
 
-            $token = Client::generateToken();
+            $token = \Thuc\API\Client::generateToken($this->config["google"]['client_id'], $this->config["google"]['client_secret']);
 
             if (!$token) {
                 $this->code->releaseError("Lỗi không tạo được khóa");
@@ -271,7 +268,7 @@ class OutsideController extends AbstractActionController {
             $subject = "Kích hoạt tài khoản";
             $body = APP_URL . "/a/kich-hoat/{$email}?token={$token}";
 
-            $verify = new Mail($subject, $body, $email);
+            $verify = new \Thuc\Mail($this->config["mail"]["username"], $this->config["mail"]["password"], $subject, $body, $email);
             $verify->send();
 
             $this->code->success("Đăng ký thành công");
@@ -282,7 +279,7 @@ class OutsideController extends AbstractActionController {
 
     public function resetPasswordAction() {
 
-        if (!Client::verifyRespone($this->ENV)) {
+        if (!\Thuc\API\Client::verifyRespone($this->ENV, $this->config["google"]['capcha_secret'])) {
             $this->code->error("Bạn hãy xác nhận mình không phải là robot, tự động tạo tài khoản trước.");
         }
 
@@ -306,7 +303,7 @@ class OutsideController extends AbstractActionController {
             $subject = "Thay đổi mật khẩu thành công";
             $body = APP_URL . "/a/thay-doi-mat-khau/{$email}?token={$token}&type=reset-password";
 
-            $verify = new Mail($subject, $body, $email);
+            $verify = new \Thuc\Mail($this->config["mail"]["username"], $this->config["mail"]["password"], $subject, $body, $email);
             $verify->send();
 
             $this->code->success("Thay đổi mật khẩu thành công");

@@ -4,16 +4,12 @@ namespace Thuc\API;
 
 class Client {
 
-    public static $client_id;
-    public static $client_secret;
-    public static $capcha_secret;
-
-    public static function login($username, $password) {
+    public static function login($username, $password, $client_id, $client_secret) {
         $login = \Thuc\Curl::login(API_OAUTH_URL, [
                     "grant_type" => "password",
                     "username" => $username,
                     "password" => $password
-                        ], "POST", static::$client_id, static::$client_secret
+                        ], "POST", $client_id, $client_secret
         );
 
         if ($login && isset($login["access_token"])) {
@@ -31,12 +27,12 @@ class Client {
         );
     }
 
-    public static function generateToken() {
+    public static function generateToken($client_id, $client_secret) {
 
         $gen = \Thuc\Curl::call(API_OAUTH_URL, [
                     "grant_type" => "client_credentials",
-                    "client_id" => static::$client_id,
-                    'client_secret' => static::$client_secret
+                    "client_id" => $client_id,
+                    'client_secret' => $client_secret
                         ], "POST"
         );
 
@@ -47,13 +43,17 @@ class Client {
         return "";
     }
 
-    public static function verifyRespone() {
+    public static function verifyRespone($ENV, $capcha_secret) {
+
+        if ($ENV == 1) {
+            return true;
+        }
 
         // empty response
         $response = null;
 
         // check secret key
-        $reCaptcha = new \Thuc\Google\ReCaptcha(static::$capcha_secret);
+        $reCaptcha = new \Thuc\Google\ReCaptcha($capcha_secret);
 
         // if submitted check response
         if (isset($_POST["g-recaptcha-response"])) {

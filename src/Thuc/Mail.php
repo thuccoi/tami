@@ -7,15 +7,18 @@ use Zend\Mime\Part as MimePart;
 
 class Mail {
 
-    public static $username;
-    public static $password;
+    protected $username;
+    protected $password;
     protected $smtpOptions;
     protected $subject;
     protected $body;
     protected $to;
     protected $arrto = [];
 
-    public function __construct($subject = null, $body = null, $to = null) {
+    public function __construct($username, $password, $subject = null, $body = null, $to = null) {
+        $this->username = $username;
+        $this->password = $password;
+        
         if ($subject) {
             $this->subject = $subject;
         }
@@ -31,8 +34,8 @@ class Mail {
                 ->setConnectionClass('login')
                 ->setName('smtp.gmail.com')
                 ->setConnectionConfig(array(
-                    'username' => static::$username,
-                    'password' => static::$password,
+                    'username' => $username,
+                    'password' => $password,
                     'ssl' => 'tls'
         ));
     }
@@ -70,7 +73,7 @@ class Mail {
 
         $message = new \Zend\Mail\Message();
         $message->setBody($this->body);
-        $message->setFrom(static::$username);
+        $message->setFrom($this->username);
 
         foreach ($this->arrto as $to) {
             $message->addTo($to);

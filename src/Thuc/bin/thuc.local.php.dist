@@ -1,0 +1,16 @@
+<?php
+
+return [
+  "google"=>[
+      "client_id"=>"",
+      "client_secret"=>"",
+      "capcha_secret"=>"",
+  ]  ,
+    "mail"=>[
+        "username"=>"",
+        "password"=>""
+    ],
+    "environment"=>[
+        "ENV"=>1
+    ]
+];

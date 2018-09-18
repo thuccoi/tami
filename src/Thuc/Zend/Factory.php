@@ -22,7 +22,7 @@ final class Factory implements \Zend\ServiceManager\Factory\FactoryInterface {
         $sessionManager = $services->get(SessionManager::class);
         $sessionContainer = new Container('thuc', $sessionManager);
 
-        return new $requestedName($dm, $ENV, $sessionContainer);
+        return new $requestedName($dm, $ENV, $sessionContainer, $config);
     }
 
 }
