@@ -263,7 +263,6 @@ class OutsideController extends AbstractActionController {
             }
 
 
-
             //send email verify
             $subject = "Kích hoạt tài khoản";
             $body = APP_URL . "/a/kich-hoat/{$email}?token={$token}";
