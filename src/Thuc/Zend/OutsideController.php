@@ -38,7 +38,11 @@ class OutsideController extends AbstractActionController {
 
         $response = parent::onDispatch($e);
 
+        //enviroment
+        $this->layout()->ENV = $this->ENV;
+
         $this->layout()->setTemplate('outside/layout');
+
 
         if ($this->sessionContainer && isset($this->sessionContainer->email)) {
             return $this->redirect()->toRoute("langguage");
