@@ -40,6 +40,12 @@ class User implements SoftDeleteable {
      * 
      * @ODM\Field(type="string")
      */
+    private $email;
+
+    /**
+     * 
+     * @ODM\Field(type="string")
+     */
     private $client_id;
 
     /**
@@ -142,11 +148,20 @@ class User implements SoftDeleteable {
         return $this;
     }
 
+    public function getEmail() {
+        return $this->email;
+    }
+
+    public function setEmail($email) {
+        $this->email = $email;
+        return $this;
+    }
+
     public function getClientID() {
         return $this->client_id;
     }
 
-    public function setClientID($client_id="") {
+    public function setClientID($client_id = "") {
 
         $this->client_id = $client_id;
         return $this;
@@ -314,6 +329,8 @@ class User implements SoftDeleteable {
         return (object) [
                     "id" => $this->getId(),
                     "client_id" => $this->getClientID(),
+                    "username" => $this->getUsername(),
+                    "email" => $this->getEmail(),
                     "token" => $this->getToken(),
                     "status" => $this->getStatus(),
                     "picture" => $this->getPicture(),
