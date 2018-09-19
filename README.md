@@ -17,3 +17,10 @@ Thêm `'Thuc\Oauth' => 'thuc',` vào `config/autoload/module.doctrine-mongo-odm.
                 )
             ),
 `
+
+thêm ENV vào onDispatch controller 
+
+`    function onDispatch(MvcEvent $e) {
+  //enviroment
+        $this->layout()->ENV = $this->ENV;
+}`

@@ -267,7 +267,7 @@ class OutsideController extends AbstractActionController {
             $token = \Thuc\API\Client::generateToken($this->config["google"]['client_id'], $this->config["google"]['client_secret']);
 
             if (!$token) {
-                $this->code->releaseError("Lỗi không tạo được khóa");
+                $this->code->error("Lỗi không tạo được khóa");
             }
 
             $data["token"] = $token;
