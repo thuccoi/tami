@@ -7,7 +7,7 @@ use Doctrine\ODM\MongoDB\SoftDelete\SoftDeleteable;
 
 /**
  * 
- * @ODM\Document(collection="oauth_authorization_codes")
+ * @ODM\Document(database="oauth2", collection="oauth_authorization_codes")
  */
 class AuthorizationCode implements SoftDeleteable {
 

@@ -7,7 +7,7 @@ use Doctrine\ODM\MongoDB\SoftDelete\SoftDeleteable;
 
 /**
  * 
- * @ODM\Document(collection="oauth_jwt")
+ * @ODM\Document(database="oauth2", collection="oauth_jwt")
  */
 class Jwt implements SoftDeleteable {
 

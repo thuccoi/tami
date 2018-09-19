@@ -7,7 +7,7 @@ use Doctrine\ODM\MongoDB\SoftDelete\SoftDeleteable;
 
 /**
  * 
- * @ODM\Document(collection="oauth_scopes")
+ * @ODM\Document(database="oauth2", collection="oauth_scopes")
  */
 class Scope implements SoftDeleteable {
 
