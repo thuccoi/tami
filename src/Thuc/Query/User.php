@@ -13,7 +13,52 @@ class User extends \Thuc\Doctrine\RestFul {
 
     public function create($data) {
         try {
+
+            if (!isset($data["client_id"])) {
+                return (object) [
+                            "status" => 403,
+                            "message" => "Lỗi bảo mật"
+                ];
+            }
+
+            if (!isset($data["email"])) {
+                return (object) [
+                            "status" => 403,
+                            "message" => "Yêu cầu địa chỉ Email"
+                ];
+            }
+
+            if (!isset($data["password"])) {
+                return (object) [
+                            "status" => 403,
+                            "message" => "Yêu cầu mật khẩu"
+                ];
+            }
+
+            if (!isset($data["first_name"])) {
+                return (object) [
+                            "status" => 403,
+                            "message" => "Yêu cầu tên"
+                ];
+            }
+
+            if (!isset($data["last_name"])) {
+                return (object) [
+                            "status" => 403,
+                            "message" => "Yêu cầu họ"
+                ];
+            }
+
+            if (!isset($data["phone"])) {
+                return (object) [
+                            "status" => 403,
+                            "message" => "Yêu cầu số điện thoại"
+                ];
+            }
+
             $obj = new $this->classname();
+
+            $obj->setClientID($data["client_id"]);
 
             if (isset($data["token"])) {
                 $obj->setToken($data["token"]);
@@ -65,7 +110,6 @@ class User extends \Thuc\Doctrine\RestFul {
                         "status" => 200,
                         "message" => "Tạo tài khoản thành công"
             ];
-            
         } catch (\Doctrine\MongoDB\Exception $ex) {
             return (object) [
                         "status" => 500,

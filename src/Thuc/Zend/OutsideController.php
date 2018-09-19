@@ -257,6 +257,7 @@ class OutsideController extends AbstractActionController {
                 "phone" => $phone,
                 "email" => $email,
                 "password" => $password,
+                "client_id" => $this->config["google"]['client_id']
             ];
 
             $token = \Thuc\API\Client::generateToken($this->config["google"]['client_id'], $this->config["google"]['client_secret']);

@@ -106,14 +106,16 @@ class User implements SoftDeleteable {
     public static $fromGoogle = "google";
     public static $fromNative = "native";
 
-    public function __construct() {
-        $this->construct();
+    public function __construct($client_id = "") {
+        $this->construct($client_id);
     }
 
-    protected function construct() {
+    protected function construct($client_id = "") {
         $this->status = 0;
 
-        $this->client_id = static::$client_id;
+        if ($client_id) {
+            $this->client_id = $client_id;
+        }
 
         $this->create_from = static::$fromNative;
         $this->picture = static::$pictureDefault;
@@ -144,11 +146,7 @@ class User implements SoftDeleteable {
         return $this->client_id;
     }
 
-    public function setClientID($client_id) {
-
-        if (!$client_id) {
-            $client_id = self::$clientThuongVu;
-        }
+    public function setClientID($client_id="") {
 
         $this->client_id = $client_id;
         return $this;
