@@ -232,8 +232,7 @@ class OutsideController extends AbstractActionController {
         }
 
         if ($incorrect === true) {
-            echo "Thông tin đăng nhập không đúng";
-            exit;
+            $this->code->error("Thông tin đăng nhập không đúng");
         }
 
 
