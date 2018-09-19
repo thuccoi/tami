@@ -5,7 +5,7 @@ namespace Thuc\Query;
 class User extends \Thuc\Doctrine\RestFul {
 
     public function __construct($dm) {
-        $classname = 'Thuc\Oauth\User';
+        $classname = '\Thuc\Oauth\User';
         $CascadingSoftDeleteListener = '\Thuc\Doctrine\CascadingSoftDeleteListener';
 
         parent::__construct($dm, $classname, $CascadingSoftDeleteListener);
