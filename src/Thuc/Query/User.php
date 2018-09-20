@@ -11,6 +11,108 @@ class User extends \Thuc\Doctrine\RestFul {
         parent::__construct($dm, $classname, $CascadingSoftDeleteListener);
     }
 
+    public function setPassword($data) {
+        try {
+            if (!$data || !isset($data["email"]) || !isset($data["token"]) || !isset($data["password"])) {
+                return (object) [
+                            "status" => 403,
+                            "message" => "Không đúng định dạng dữ liệu"
+                ];
+            }
+
+            $user = $this->getOne($data["email"]);
+            if (!$user) {
+                return (object) [
+                            "status" => 404,
+                            "message" => "Không tồn tại tài khoản này trong hệ thống"
+                ];
+            }
+
+            if (!$user->isActive()) {
+                return (object) [
+                            "status" => 403,
+                            "message" => "Tài khoản này chưa được kích hoạt"
+                ];
+            }
+
+            if ($user->getToken() != $data["token"]) {
+                return (object) [
+                            "status" => 403,
+                            "message" => "Liên kết đã hết hạn, hoặc bị lỗi"
+                ];
+            }
+
+            $user->setPassword($data["password"])->setLastUpdate(new \MongoTimeStamp());
+
+            $this->dm->persist($user);
+            $this->dm->flush();
+            $this->dm->clear();
+
+            return (object) [
+                        "status" => 200,
+                        "message" => "Đặt mật khẩu thành công"
+            ];
+        } catch (\Doctrine\MongoDB\Exception $ex) {
+            return (object) [
+                        "status" => 405,
+                        "message" => "Lỗi máy chủ"
+            ];
+        }
+
+        return (object) [
+                    "status" => 405,
+                    "message" => "Lỗi máy chủ"
+        ];
+    }
+
+    public function checkToken($data) {
+        try {
+            if (!$data || !isset($data["email"]) || !isset($data["token"])) {
+                return (object) [
+                            "status" => 403,
+                            "message" => "Không đúng định dạng dữ liệu"
+                ];
+            }
+
+            $user = $this->getOne($data["email"]);
+            if (!$user) {
+                return (object) [
+                            "status" => 404,
+                            "message" => "Không tồn tại tài khoản này trong hệ thống"
+                ];
+            }
+
+            if (!$user->isActive()) {
+                return (object) [
+                            "status" => 403,
+                            "message" => "Tài khoản này chưa được kích hoạt"
+                ];
+            }
+
+            if ($user->getToken() != $data["token"]) {
+                return (object) [
+                            "status" => 403,
+                            "message" => "Liên kết đã hết hạn, hoặc bị lỗi"
+                ];
+            }
+
+            return (object) [
+                        "status" => 200,
+                        "message" => "Khóa xác thực đúng"
+            ];
+        } catch (\Doctrine\MongoDB\Exception $ex) {
+            return (object) [
+                        "status" => 405,
+                        "message" => "Lỗi máy chủ"
+            ];
+        }
+
+        return (object) [
+                    "status" => 405,
+                    "message" => "Lỗi máy chủ"
+        ];
+    }
+
     public function activate($data) {
         try {
             if (!$data || !isset($data["email"]) || !isset($data["token"])) {

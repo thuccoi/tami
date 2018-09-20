@@ -113,25 +113,23 @@ class OutsideController extends AbstractActionController {
 
     public function datMatKhauAction() {
 
-        $id = $this->code->param("id");
+        $email = $this->code->param("id");
 
         $token = $this->code->get("token");
 
-        if (!$id || !$token) {
+        if (!$email || !$token) {
             return $this->redirect()->toRoute("outside", ["action" => "dang-nhap"]);
         }
 
         $data = [
-            "email" => $id,
+            "email" => $email,
             "token" => $token
         ];
 
-
-        return new ViewModel([
-            "email" => $id,
-            "token" => $token
-        ]);
-
+        $check = $this->user->checkToken($data);
+        if ($check->status == 200) {
+            return new ViewModel($data);
+        }
 
 
         return $this->redirect()->toRoute("outside", ["action" => "dang-nhap"]);
@@ -139,27 +137,23 @@ class OutsideController extends AbstractActionController {
 
     public function thayDoiMatKhauAction() {
 
-        $id = $this->code->param("id");
+        $email = $this->code->param("id");
 
         $token = $this->code->get("token");
-        $type = $this->code->get("type");
 
-        if (!$id || !$token) {
+        if (!$email || !$token) {
             return $this->redirect()->toRoute("outside", ["action" => "dang-nhap"]);
         }
 
         $data = [
-            "email" => $id,
+            "email" => $email,
             "token" => $token
         ];
 
-        return new ViewModel([
-            "email" => $id,
-            "token" => $token,
-            "type" => $type
-        ]);
-
-
+        $check = $this->user->checkToken($data);
+        if ($check->status == 200) {
+            return new ViewModel($data);
+        }
 
         return $this->redirect()->toRoute("outside", ["action" => "dang-nhap"]);
     }
@@ -178,14 +172,20 @@ class OutsideController extends AbstractActionController {
                 $this->code->error("Đã có lỗi xãy ra với máy chủ");
             }
 
-            //send email verify
-            $subject = "Khôi phục mật khẩu mới";
-            $body = APP_URL . "/a/dat-mat-khau/{$email}?token={$token}";
+            $check = $this->user->checkToken(["email" => $email, "token" => $token]);
+            if ($check->status == 200) {
 
-            $verify = new \Thuc\Mail($this->config["mail"]["username"], $this->config["mail"]["password"], $subject, $body, $email);
-            $verify->send();
+                //send email verify
+                $subject = "Khôi phục mật khẩu mới";
+                $body = APP_URL . "/a/dat-mat-khau/{$email}?token={$token}";
 
-            $this->code->success("Chúng tôi đã gửi một đường dẫn tới địa chỉ email {$email}, bạn hãy truy cập vào email của bạn và làm theo hướng dẫn của chúng tôi, để thiết lập mật khẩu mới cho bạn.");
+                $verify = new \Thuc\Mail($this->config["mail"]["username"], $this->config["mail"]["password"], $subject, $body, $email);
+                $verify->send();
+
+                $this->code->success("Chúng tôi đã gửi một đường dẫn tới địa chỉ email {$email}.");
+            } else {
+                $this->code->error($check->message);
+            }
         }
 
         $this->code->error("Bạn hãy điền email của mình để khôi phục mật khẩu.");
@@ -314,15 +314,18 @@ class OutsideController extends AbstractActionController {
                 "token" => $token,
             ];
 
+            $respone = $this->user->setPassword($data);
+            if ($respone->status == 200) {
 
-            //send email verify
-            $subject = "Thay đổi mật khẩu thành công";
-            $body = APP_URL . "/a/thay-doi-mat-khau/{$email}?token={$token}&type=reset-password";
+                //send email verify
+                $subject = "Thay đổi mật khẩu thành công";
+                $body = APP_URL . "/a/thay-doi-mat-khau/{$email}?token={$token}&type=reset-password";
 
-            $verify = new \Thuc\Mail($this->config["mail"]["username"], $this->config["mail"]["password"], $subject, $body, $email);
-            $verify->send();
+                $verify = new \Thuc\Mail($this->config["mail"]["username"], $this->config["mail"]["password"], $subject, $body, $email);
+                $verify->send();
 
-            $this->code->success("Thay đổi mật khẩu thành công");
+                $this->code->success("Thay đổi mật khẩu thành công");
+            }
         }
 
         if ($password != $repassword) {
