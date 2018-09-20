@@ -238,8 +238,7 @@ class OutsideController extends AbstractActionController {
             $this->code->error("Thông tin đăng nhập không đúng");
         }
 
-
-        return $this->redirect()->toRoute("outside", ["action" => "dang-nhap"]);
+        $this->code->success("Đăng nhập thành công");
     }
 
     public function registerAction() {
