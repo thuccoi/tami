@@ -140,6 +140,7 @@ class OutsideController extends AbstractActionController {
         $email = $this->code->param("id");
 
         $token = $this->code->get("token");
+        $type = $this->code->get("type");
 
         if (!$email || !$token) {
             return $this->redirect()->toRoute("outside", ["action" => "dang-nhap"]);
@@ -147,7 +148,8 @@ class OutsideController extends AbstractActionController {
 
         $data = [
             "email" => $email,
-            "token" => $token
+            "token" => $token,
+            "type" => $type
         ];
 
         $check = $this->user->checkToken($data);
@@ -181,7 +183,7 @@ class OutsideController extends AbstractActionController {
             $this->dm->persist($user);
             $this->dm->flush();
             $this->dm->clear();
-            
+
             //send email verify
             $subject = "Khôi phục mật khẩu mới";
             $body = APP_URL . "/a/dat-mat-khau/{$email}?token={$user->getToken()}";
