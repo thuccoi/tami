@@ -218,7 +218,15 @@ class OutsideController extends AbstractActionController {
             $result = \Thuc\API\Client::login($email, $password, $this->config["google"]["client_id"], $this->config["google"]["client_secret"]);
 
             if ($result === true) {
-                $this->sessionContainer->email = $email;
+                $user = $this->user->getOne($email);
+
+                if (!$user) {
+                    $incorrect = true;
+                } else if (!$user->isActive()) {
+                    $this->code->error("Tài khoản này chưa được kích hoạt");
+                } else {
+                    $this->sessionContainer->email = $email;
+                }
             } else {
                 $incorrect = true;
             }

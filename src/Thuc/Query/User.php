@@ -31,7 +31,7 @@ class User extends \Thuc\Doctrine\RestFul {
             if ($user->isActive()) {
                 return (object) [
                             "status" => 403,
-                            "message" => "Tài khoản này đang hoạt động"
+                            "message" => "Tài khoản này đang hoạt động, vì đã được kích hoạt từ trước đó"
                 ];
             }
 
