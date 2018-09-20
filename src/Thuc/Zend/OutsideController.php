@@ -185,7 +185,7 @@ class OutsideController extends AbstractActionController {
             $verify = new \Thuc\Mail($this->config["mail"]["username"], $this->config["mail"]["password"], $subject, $body, $email);
             $verify->send();
 
-            $this->code->success("Bạn hãy vào email để thực hiện khôi phục mật khẩu");
+            $this->code->success("Chúng tôi đã gửi một đường dẫn tới địa chỉ email {$email}, bạn hãy truy cập vào email của bạn và làm theo hướng dẫn của chúng tôi, để thiết lập mật khẩu mới cho bạn.");
         }
 
         $this->code->error("Bạn hãy điền email của mình để khôi phục mật khẩu.");
