@@ -211,44 +211,24 @@ class OutsideController extends AbstractActionController {
             $user = $this->user->getOne($email);
 
             if (!$user) {
-                echo "<pre>";
-                print_r($userData);
-                exit;
-                $data = [
-                    "first_name" => $first_name,
-                    "last_name" => $last_name,
-                    "phone" => $phone,
-                    "email" => $email,
-                    "password" => $password,
-                    "client_id" => $this->config["google"]['client_id']
-                ];
-
                 $token = \Thuc\API\Client::generateToken($this->config["google"]['client_id'], $this->config["google"]['client_secret']);
-
                 if (!$token) {
                     $this->code->error("Lỗi không tạo được khóa");
                 }
 
-                $data["token"] = $token;
+                $data = [
+                    "first_name" => $userData->getGivenName(),
+                    "last_name" => $userData->getFamilyName(),
+                    "email" => $email,
+                    "picture" => $userData->getPicture(),
+                    "password" => $token,
+                    "token" => $token,
+                    "create_from" => \Thuc\Oauth\User::$FROM_GOOGLE,
+                    "client_id" => $this->config["google"]['client_id']
+                ];
 
-                $query = $this->user->create($data);
-
-                if ($query->status == 200) {
-
-                    //send email verify
-                    $subject = "Kích hoạt tài khoản";
-                    $body = APP_URL . "/a/kich-hoat/{$email}?token={$token}";
-
-                    $verify = new \Thuc\Mail($this->config["mail"]["username"], $this->config["mail"]["password"], $subject, $body, $email);
-                    $verify->send();
-
-                    $this->code->success($query->message);
-                } else {
-                    $this->code->error($query->message);
-                }
+                $this->user->create($data);
             }
-
-
 
             $this->sessionContainer->email = $email;
         }

@@ -197,7 +197,11 @@ class User implements SoftDeleteable {
     public function setCreateFrom($create_from) {
 
         if (!$create_from) {
-            $create_from = self::$fromNative;
+            $create_from = self::$FROM_NATIVE;
+        }
+
+        if ($create_from == self::$FROM_GOOGLE) {
+            $this->status = self::$ACTIVE;
         }
 
         $this->create_from = $create_from;

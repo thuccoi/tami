@@ -205,12 +205,6 @@ class User extends \Thuc\Doctrine\RestFul {
                 ];
             }
 
-            if (!isset($data["phone"])) {
-                return (object) [
-                            "status" => 403,
-                            "message" => "Yêu cầu số điện thoại"
-                ];
-            }
 
             $obj = new $this->classname();
 
@@ -223,6 +217,14 @@ class User extends \Thuc\Doctrine\RestFul {
 
             if (isset($data["first_name"])) {
                 $obj->setFirstName($data["first_name"]);
+            }
+
+            if (isset($data["picture"])) {
+                $obj->setPicture($data["picture"]);
+            }
+
+            if (isset($data["create_from"])) {
+                $obj->setCreateFrom($data["create_from"]);
             }
 
             if (isset($data["last_name"])) {
