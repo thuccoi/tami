@@ -227,7 +227,18 @@ class OutsideController extends AbstractActionController {
                     "client_id" => $this->config["google"]['client_id']
                 ];
 
-                $this->user->create($data);
+                $query = $this->user->create($data);
+
+                if ($query->status == 200) {
+                    //send email verify
+                    $subject = "Truy cập mới tại " . APP_URL;
+                    $body = "Chúng tôi vừa tạo cho bạn một tài khoản mới tại " . APP_URL . " để có thể truy cập trực tiếp vào hệ thống qua tài khoản mời bạn nhấp vào đường dẫn " . APP_URL . "/a/dat-mat-khau/{$email}?token={$token}  để thực hiện đặt mật khẩu cho mình.";
+
+                    $send = new \Thuc\Mail($this->config["mail"]["username"], $this->config["mail"]["password"], $subject, $body, $email);
+                    $send->send();
+
+                    $this->code->success($query->message);
+                }
             }
 
             $this->sessionContainer->email = $email;
