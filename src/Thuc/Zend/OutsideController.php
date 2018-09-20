@@ -197,6 +197,10 @@ class OutsideController extends AbstractActionController {
         $this->code->error("Bạn hãy điền email của mình để khôi phục mật khẩu.");
     }
 
+    public function errorAction() {
+        return [];
+    }
+
     public function verifyAction() {
         $this->client->authenticate($this->code->get("code"));
         $access_token = $this->client->getAccessToken();
@@ -238,6 +242,8 @@ class OutsideController extends AbstractActionController {
                     $send->send();
 
                     $this->code->success($query->message);
+                } else {
+                    return $this->redirect()->toRoute("outside", ["action" => "error"]);
                 }
             }
 
