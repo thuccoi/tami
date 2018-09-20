@@ -92,28 +92,23 @@ class OutsideController extends AbstractActionController {
 
     public function kichHoatAction() {
 
-        $id = $this->code->param("id");
+        $email = $this->code->param("id");
 
         $token = $this->code->get("token");
 
-        if (!$id || !$token) {
+        if (!$email || !$token) {
             return $this->redirect()->toRoute("outside", ["action" => "dang-nhap"]);
         }
 
         $data = [
-            "email" => $id,
+            "email" => $email,
             "token" => $token
         ];
 
         return new ViewModel([
-            "id" => $id,
-            "activate" => TRUE,
-            "message" => "Kích hoạt thành công"
+            "email" => $email,
+            "respone" => $this->user->activate($data)
         ]);
-
-
-
-        return $this->redirect()->toRoute("outside", ["action" => "dang-nhap"]);
     }
 
     public function datMatKhauAction() {

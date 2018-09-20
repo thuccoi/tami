@@ -106,11 +106,11 @@ class User implements SoftDeleteable {
      * @ODM\Field(type="timestamp")
      */
     private $last_update;
-    public static $isActive = 1;
-    public static $isDeactivate = -1;
-    public static $pictureDefault = "/img/avatar.png";
-    public static $fromGoogle = "google";
-    public static $fromNative = "native";
+    public static $ACTIVE = 1;
+    public static $INACTIVE = -1;
+    public static $PICTURE_DEFAULT = "/img/avatar.png";
+    public static $FROM_GOOGLE = "google";
+    public static $FROM_NATIVE = "native";
 
     public function __construct($client_id = "") {
         $this->construct($client_id);
@@ -123,11 +123,25 @@ class User implements SoftDeleteable {
             $this->client_id = $client_id;
         }
 
-        $this->create_from = static::$fromNative;
-        $this->picture = static::$pictureDefault;
+        $this->create_from = static::$FROM_NATIVE;
+        $this->picture = static::$PICTURE_DEFAULT;
         $this->data = [];
         $this->since = new \MongoTimeStamp();
         $this->last_update = new \MongoTimeStamp();
+    }
+
+    public function activate() {
+        $this->status = self::$ACTIVE;
+        return $this;
+    }
+
+    public function deactivate() {
+        $this->status = self::$INACTIVE;
+        return $this;
+    }
+
+    public function isActive() {
+        return ($this->status === self::$ACTIVE);
     }
 
     public function getId() {
@@ -210,42 +224,6 @@ class User implements SoftDeleteable {
 
     public function setStatus($status) {
         $this->status = (int) $status;
-        return $this;
-    }
-
-    //actiate account
-    public function activate() {
-        $this->status = self::$isActive;
-
-        $this->renewToken("activate");
-
-        return $this;
-    }
-
-    //deactivate account
-    public function deActivate() {
-        $this->status = self::$isDeactivate;
-
-        $this->renewToken("deactivate");
-
-        return $this;
-    }
-
-    public function renewToken($name) {
-
-        $store = [
-            "token" => $this->token,
-            "at" => (new \MongoTimeStamp())
-        ];
-
-        if ($this->data) {
-            $this->data[$name] = $store;
-        } else {
-            $this->data = [$name => $store];
-        }
-
-        $this->token = \Application\Core\String::random();
-
         return $this;
     }
 
