@@ -240,8 +240,6 @@ class OutsideController extends AbstractActionController {
 
                     $send = new \Thuc\Mail($this->config["mail"]["username"], $this->config["mail"]["password"], $subject, $body, $email);
                     $send->send();
-
-                    $this->code->success($query->message);
                 } else {
                     return $this->redirect()->toRoute("outside", ["action" => "error"]);
                 }
