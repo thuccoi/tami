@@ -166,26 +166,19 @@ class OutsideController extends AbstractActionController {
         $email = $this->code->post("email");
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
-            $token = \Thuc\API\Client::generateToken($this->config["google"]["client_id"], $this->config["google"]["client_secret"]);
-
-            if (!$token) {
-                $this->code->error("Đã có lỗi xãy ra với máy chủ");
+            $user = $this->user->getOne($email);
+            if (!$user) {
+                $this->code->error("Không tìm thấy tài khoản có địa chỉ email này không có trong hệ thống");
             }
 
-            $check = $this->user->checkToken(["email" => $email, "token" => $token]);
-            if ($check->status == 200) {
+            //send email verify
+            $subject = "Khôi phục mật khẩu mới";
+            $body = APP_URL . "/a/dat-mat-khau/{$email}?token={$user->getToken()}";
 
-                //send email verify
-                $subject = "Khôi phục mật khẩu mới";
-                $body = APP_URL . "/a/dat-mat-khau/{$email}?token={$token}";
+            $verify = new \Thuc\Mail($this->config["mail"]["username"], $this->config["mail"]["password"], $subject, $body, $email);
+            $verify->send();
 
-                $verify = new \Thuc\Mail($this->config["mail"]["username"], $this->config["mail"]["password"], $subject, $body, $email);
-                $verify->send();
-
-                $this->code->success("Chúng tôi đã gửi một đường dẫn tới địa chỉ email {$email}.");
-            } else {
-                $this->code->error($check->message);
-            }
+            $this->code->success("Chúng tôi đã gửi một đường dẫn tới địa chỉ email {$email}.");
         }
 
         $this->code->error("Bạn hãy điền email của mình để khôi phục mật khẩu.");
