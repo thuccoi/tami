@@ -171,6 +171,17 @@ class OutsideController extends AbstractActionController {
                 $this->code->error("Không tìm thấy tài khoản có địa chỉ email này không có trong hệ thống");
             }
 
+            $token = \Thuc\API\Client::generateToken($this->config["google"]["client_id"], $this->config["google"]["client_secret"]);
+
+            if (!$token) {
+                $this->code->error("Đã có lỗi xãy ra với máy chủ");
+            }
+
+            $user->setToken($token);
+            $this->dm->persist($user);
+            $this->dm->flush();
+            $this->dm->clear();
+            
             //send email verify
             $subject = "Khôi phục mật khẩu mới";
             $body = APP_URL . "/a/dat-mat-khau/{$email}?token={$user->getToken()}";
