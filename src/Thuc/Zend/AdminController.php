@@ -32,9 +32,11 @@ class AdminController extends AbstractActionController {
         return [
         ];
     }
-    
-    public function hoSoAction(){
-        return [];
+
+    public function hoSoAction() {
+        return [
+            "viewer" => $this->sessionContainer->viewer
+        ];
     }
 
 }
