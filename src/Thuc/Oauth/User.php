@@ -85,6 +85,12 @@ class User implements SoftDeleteable {
 
     /**
      * 
+     * @ODM\Field(type="string")
+     */
+    private $info;
+
+    /**
+     * 
      * @ODM\Field(type="int")
      */
     private $status;
@@ -300,6 +306,15 @@ class User implements SoftDeleteable {
         return $this;
     }
 
+    public function getInfo() {
+        return $this->info;
+    }
+
+    public function setInfo($info) {
+        $this->info = $info;
+        return $this;
+    }
+
     public function getData() {
         return $this->data;
     }
@@ -334,6 +349,7 @@ class User implements SoftDeleteable {
                     "name" => $this->getName(),
                     "phone" => $this->getPhone(),
                     "address" => $this->getAddress(),
+                    "info" => $this->getInfo(),
                     "create_from" => $this->getCreateFrom(),
                     "data" => $this->getData(),
                     "last_update" => $this->getLastUpdate(),
