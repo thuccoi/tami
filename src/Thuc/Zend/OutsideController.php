@@ -201,6 +201,13 @@ class OutsideController extends AbstractActionController {
         return [];
     }
 
+    public function logOutAction() {
+        //remove viewer
+        unset($this->sessionContainer->viewer);
+        
+        return $this->redirect()->toRoute("outside", ["action" => "dang-nhap"]);
+    }
+
     public function verifyAction() {
         $this->client->authenticate($this->code->get("code"));
         $access_token = $this->client->getAccessToken();
