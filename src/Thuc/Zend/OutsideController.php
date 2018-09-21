@@ -44,7 +44,7 @@ class OutsideController extends AbstractActionController {
         $this->layout()->setTemplate('outside/layout');
 
 
-        if ($this->sessionContainer && isset($this->sessionContainer->email)) {
+        if ($this->sessionContainer && isset($this->sessionContainer->viewer)) {
             return $this->redirect()->toRoute("langguage");
         }
 
@@ -243,9 +243,12 @@ class OutsideController extends AbstractActionController {
                 } else {
                     return $this->redirect()->toRoute("outside", ["action" => "error"]);
                 }
+
+                //get user
+                $user = $this->user->getOne($email);
             }
 
-            $this->sessionContainer->email = $email;
+            $this->sessionContainer->viewer = $user;
         }
 
         return $this->redirect()->toRoute("outside", ["action" => "dang-nhap"]);
@@ -269,7 +272,7 @@ class OutsideController extends AbstractActionController {
                 } else if (!$user->isActive()) {
                     $this->code->error("Tài khoản này chưa được kích hoạt");
                 } else {
-                    $this->sessionContainer->email = $email;
+                    $this->sessionContainer->viewer = $user;
                 }
             } else {
                 $incorrect = true;
