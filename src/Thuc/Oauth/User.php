@@ -97,6 +97,12 @@ class User implements SoftDeleteable {
 
     /**
      * 
+     * @ODM\Field(type="bool")
+     */
+    private $public;
+
+    /**
+     * 
      * @ODM\Field(type="int")
      */
     private $status;
@@ -124,6 +130,8 @@ class User implements SoftDeleteable {
      * @ODM\Field(type="timestamp")
      */
     private $last_update;
+    public static $PUBLIC = true;
+    public static $UNPUBLIC = false;
     public static $ACTIVE = 1;
     public static $INACTIVE = -1;
     public static $PICTURE_DEFAULT = "/img/avatar.png";
@@ -140,6 +148,8 @@ class User implements SoftDeleteable {
         if ($client_id) {
             $this->client_id = $client_id;
         }
+
+        $this->public = FALSE;
 
         $this->create_from = static::$FROM_NATIVE;
         $this->picture = static::$PICTURE_DEFAULT;
@@ -322,11 +332,23 @@ class User implements SoftDeleteable {
     }
 
     public function getInfo() {
-        return $this->info;
+        if ($this->info) {
+            return base64_decode($this->info);
+        }
+        return '';
     }
 
     public function setInfo($info) {
         $this->info = $info;
+        return $this;
+    }
+
+    public function getPublic() {
+        return $this->public;
+    }
+
+    public function setPublic($public) {
+        $this->public = $public;
         return $this;
     }
 
@@ -366,6 +388,7 @@ class User implements SoftDeleteable {
                     "address" => $this->getAddress(),
                     "title" => $this->getTitle(),
                     "info" => $this->getInfo(),
+                    "public" => $this->getPublic(),
                     "create_from" => $this->getCreateFrom(),
                     "data" => $this->getData(),
                     "last_update" => $this->getLastUpdate(),

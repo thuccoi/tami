@@ -277,7 +277,61 @@ class User extends \Thuc\Doctrine\RestFul {
     }
 
     public function update($id, $data) {
-        ;
+        try {
+            $user = $this->getOne($id);
+            if ($user) {
+                $hasupdate = false;
+                if (isset($data["first_name"])) {
+                    $user->setFirstName($data["first_name"]);
+                    $hasupdate = true;
+                }
+                if (isset($data["last_name"])) {
+                    $user->setLastName($data["last_name"]);
+                    $hasupdate = true;
+                }
+                if (isset($data["title"])) {
+                    $user->setTitle($data["title"]);
+                    $hasupdate = true;
+                }
+                if (isset($data["info"])) {
+                    $user->setInfo($data["info"]);
+                    $hasupdate = true;
+                }
+                if (isset($data["address"])) {
+                    $user->setAddress($data["address"]);
+                    $hasupdate = true;
+                }
+                if (isset($data["phone"])) {
+                    $user->setPhone($data["phone"]);
+                    $hasupdate = true;
+                }
+                if (isset($data["password"])) {
+                    $user->setPassword($data["password"]);
+                    $hasupdate = true;
+                }
+                if (isset($data["public"])) {
+
+                    if ($data["public"] === "on" || $data["public"]) {
+                        $user->setPublic(\Thuc\Oauth\User::$PUBLIC);
+                    } else {
+                        $user->setPublic(\Thuc\Oauth\User::$UNPUBLIC);
+                    }
+
+                    $hasupdate = true;
+                }
+                if ($hasupdate) {
+                    $user->setLastUpdate(new \MongoTimestamp());
+                    $this->dm->persist($user);
+                    $this->dm->flush();
+                    $this->dm->clear();
+
+                    return true;
+                }
+            }
+        } catch (\Doctrine\MongoDB\Exception $ex) {
+            return false;
+        }
+        return false;
     }
 
     public function getMany($arr) {
@@ -285,19 +339,23 @@ class User extends \Thuc\Doctrine\RestFul {
     }
 
     public function getOne($id) {
-        //id
-        $find = $this->dm->getRepository($this->classname)->find($id);
-        //email
-        if (!$find) {
-            $find = $this->dm->getRepository($this->classname)->findOneBy(["email" => $id]);
-        }
-        //username
-        if (!$find) {
-            $find = $this->dm->getRepository($this->classname)->findOneBy(["username" => $id]);
-        }
+        try {
+            //id
+            $find = $this->dm->getRepository($this->classname)->find($id);
+            //email
+            if (!$find) {
+                $find = $this->dm->getRepository($this->classname)->findOneBy(["email" => $id]);
+            }
+            //username
+            if (!$find) {
+                $find = $this->dm->getRepository($this->classname)->findOneBy(["username" => $id]);
+            }
 
-
-        return $find;
+            return $find;
+        } catch (\Doctrine\MongoDB\Exception $ex) {
+            return null;
+        }
+        return null;
     }
 
 }

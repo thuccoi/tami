@@ -331,8 +331,14 @@ class Langguage {
         ]
     ];
 
-    public static function translateVINew($string) {
-        foreach (self::$newlangguage as $key => $arr) {
+    public static function translateVINew($string, $additions = []) {
+        $newlangguage = self::$newlangguage;
+
+        foreach ($additions as $val) {
+            $newlangguage [] = $val;
+        }
+
+        foreach ($newlangguage as $key => $arr) {
             if ($arr) {
                 foreach ($arr as $word) {
                     $string = str_replace($word, $key, $string);
@@ -342,16 +348,22 @@ class Langguage {
         return $string;
     }
 
-    public static function validChar($char) {
-        foreach (self::$charaters as $val) {
-            if ($char == $val) {
+    public static function validChar($char, $additions = []) {
+        $charaters = self::$charaters;
+
+        foreach ($additions as $val) {
+            $charaters [] = $val;
+        }
+
+        foreach ($charaters as $val) {
+            if ($char === $val) {
                 return TRUE;
             }
         }
         return FALSE;
     }
 
-    public static function purify($string) {
+    public static function purify($string, $additions = []) {
         $string = '' . $string;
 
         $len = strlen($string);
@@ -359,7 +371,8 @@ class Langguage {
         $str = "";
         for ($i = 0; $i < $len; $i++) {
             $c = mb_substr($string, $i, 1);
-            if (self::validChar($c)) {
+            
+            if (self::validChar($c, $additions)) {
                 $str = $str . $c;
             }
         }
@@ -367,9 +380,9 @@ class Langguage {
         return $str;
     }
 
-    public function uWord($str) {
+    public function uWord($str, $additions = []) {
 
-        $str = static::purify($str);
+        $str = self::purify($str, $additions);
 
         if (filter_var($str, FILTER_VALIDATE_EMAIL)) {
             return $str;
@@ -378,8 +391,8 @@ class Langguage {
         return mb_convert_case($str, MB_CASE_TITLE, "UTF-8");
     }
 
-    public function isNumber($str) {
-        $str = static::purify($str);
+    public function isNumber($str, $additions = []) {
+        $str = self::purify($str, $additions);
 
         $len = strlen($str);
 

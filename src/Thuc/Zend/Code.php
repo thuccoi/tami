@@ -12,7 +12,7 @@ class Code {
         $this->controller = $controller;
     }
 
-    public function sanitize($name, $method = "") {
+    public function sanitize($name, $method = "", $base64_encode = false) {
         $string = "";
         switch ($method) {
             case self::$GET:
@@ -26,6 +26,11 @@ class Code {
             default :
                 $string = $this->controller->params($name);
                 break;
+        }
+
+        //        encode base 64
+        if ($base64_encode) {
+            return base64_encode(\Thuc\Langguage::purify($string, [PHP_EOL]));
         }
 
         return \Thuc\Langguage::purify($string);
@@ -59,16 +64,16 @@ class Code {
         return $result;
     }
 
-    public function get($name) {
-        return $this->sanitize($name, self::$GET);
+    public function get($name, $base64_encode = false) {
+        return $this->sanitize($name, self::$GET, $base64_encode);
     }
 
-    public function post($name) {
-        return $this->sanitize($name, self::$POST);
+    public function post($name, $base64_encode = false) {
+        return $this->sanitize($name, self::$POST, $base64_encode);
     }
 
-    public function param($name) {
-        return $this->sanitize($name);
+    public function param($name, $base64_encode = false) {
+        return $this->sanitize($name, "", $base64_encode);
     }
 
     public function release($status = 405, $message = "Error!", $data = []) {
