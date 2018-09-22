@@ -45,7 +45,7 @@ class OutsideController extends AbstractActionController {
 
 
         if ($this->sessionContainer && isset($this->sessionContainer->viewer)) {
-            return $this->redirect()->toRoute("admin");
+            return $this->redirect()->toRoute("user");
         }
 
         return $response;

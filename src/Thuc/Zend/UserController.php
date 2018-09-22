@@ -5,7 +5,7 @@ namespace Thuc\Zend;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
 
-class AdminController extends AbstractActionController {
+class UserController extends AbstractActionController {
 
     use \Thuc\Zend\ControllerTrait;
 
@@ -14,7 +14,7 @@ class AdminController extends AbstractActionController {
         $response = parent::onDispatch($e);
 
         // Set alternative layout
-        $this->layout()->setTemplate('admin/layout');
+        $this->layout()->setTemplate('system/layout');
         $this->layout()->ENV = $this->ENV;
 
         if (!$this->sessionContainer || !isset($this->sessionContainer->viewer)) {
@@ -37,6 +37,10 @@ class AdminController extends AbstractActionController {
         return [
             "viewer" => $this->sessionContainer->viewer
         ];
+    }
+
+    public function editAction() {
+        return [];
     }
 
 }
