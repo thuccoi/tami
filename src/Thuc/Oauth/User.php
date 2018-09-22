@@ -333,7 +333,9 @@ class User implements SoftDeleteable {
 
     public function getInfo() {
         if ($this->info) {
-            return base64_decode($this->info);
+            $info = base64_decode($this->info);
+            $info = str_replace(PHP_EOL, "<br />", $info);
+            return $info;
         }
         return '';
     }
