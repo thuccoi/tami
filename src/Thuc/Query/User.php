@@ -305,6 +305,42 @@ class User extends \Thuc\Doctrine\RestFul {
                     $user->setPhone($data["phone"]);
                     $hasupdate = true;
                 }
+                if (isset($data["mobile"])) {
+                    $user->updateData("mobile", $data["mobile"]);
+                    $hasupdate = true;
+                }
+                if (isset($data["fax"])) {
+                    $user->updateData("fax", $data["fax"]);
+                    $hasupdate = true;
+                }
+                if (isset($data["skype"])) {
+                    $user->updateData("skype", $data["skype"]);
+                    $hasupdate = true;
+                }
+                if (isset($data["facebook"])) {
+                    $user->updateData("facebook", $data["facebook"]);
+                    $hasupdate = true;
+                }
+                if (isset($data["twitter"])) {
+                    $user->updateData("twitter", $data["twitter"]);
+                    $hasupdate = true;
+                }
+                if (isset($data["google_plus"])) {
+                    $user->updateData("google_plus", $data["google_plus"]);
+                    $hasupdate = true;
+                }
+                if (isset($data["linkedin"])) {
+                    $user->updateData("linkedin", $data["linkedin"]);
+                    $hasupdate = true;
+                }
+                if (isset($data["pinterest"])) {
+                    $user->updateData("pinterest", $data["pinterest"]);
+                    $hasupdate = true;
+                }
+                if (isset($data["instagram"])) {
+                    $user->updateData("instagram", $data["instagram"]);
+                    $hasupdate = true;
+                }
                 if (isset($data["password"])) {
                     $user->setPassword($data["password"]);
                     $hasupdate = true;

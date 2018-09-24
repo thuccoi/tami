@@ -53,7 +53,16 @@ class UserController extends AbstractActionController {
         $lastname = $this->code->post("lastname");
         $title = $this->code->post("title");
         $phone = $this->code->post("phone");
+        $mobile = $this->code->post("mobile");
+        $fax = $this->code->post("fax");
         $address = $this->code->post("address");
+        $skype = $this->code->post("skype");
+        $facebook = $this->code->post("facebook");
+        $twitter = $this->code->post("twitter");
+        $google_plus = $this->code->post("google_plus");
+        $linkedin = $this->code->post("linkedin");
+        $pinterest = $this->code->post("pinterest");
+        $instagram = $this->code->post("instagram");
         $info = $this->code->post("info", true);
         $public = $this->code->post("public");
         $password = $this->code->post("password");
@@ -64,7 +73,16 @@ class UserController extends AbstractActionController {
             "last_name" => $lastname,
             "title" => $title,
             "phone" => $phone,
+            "fax" => $fax,
+            "mobile" => $mobile,
             "address" => $address,
+            "skype" => $skype,
+            "facebook" => $facebook,
+            "twitter" => $twitter,
+            "google_plus" => $google_plus,
+            "linkedin" => $linkedin,
+            "pinterest" => $pinterest,
+            "instagram" => $instagram,
             "info" => $info,
             "public" => $public
         ];
@@ -81,9 +99,9 @@ class UserController extends AbstractActionController {
         $update = $this->user->update($this->sessionContainer->viewer->getId(), $data);
 
         if ($update === true) {
-            
+
             $this->sessionContainer->viewer = $this->user->getOne($this->sessionContainer->viewer->getId());
-            
+
             $this->code->success("Cập nhật thông tin của bạn thành công");
         }
 
