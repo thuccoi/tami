@@ -65,6 +65,26 @@ trait SchemaTrait {
         $this->id;
     }
 
+    public function updateData($key, $value) {
+
+        if ($this->data && isset($this->data[$key])) {
+            $this->data[$key] = $value;
+        } else {
+            $this->data[$key] = $value;
+        }
+
+        return $this;
+    }
+
+    public function getDataByKey($key) {
+
+        if ($this->data && isset($this->data[$key])) {
+            return $this->data[$key];
+        }
+
+        return null;
+    }
+
     public function getData() {
         return $this->data;
     }
