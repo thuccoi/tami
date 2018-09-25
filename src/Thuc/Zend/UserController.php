@@ -96,11 +96,11 @@ class UserController extends AbstractActionController {
         }
 
         //update information
-        $update = $this->user->update($this->sessionContainer->viewer->getId(), $data);
+        $update = $this->user->update($this->sessionContainer->viewer->getUser()->getId(), $data);
 
         if ($update === true) {
-
-            $this->sessionContainer->viewer = $this->user->getOne($this->sessionContainer->viewer->getId());
+            $query = new \System\Query\Member($this->dm);
+            $this->sessionContainer->viewer = $query->getOne($this->sessionContainer->viewer->getUser()->getId());
 
             $this->code->success("Cập nhật thông tin của bạn thành công");
         }
