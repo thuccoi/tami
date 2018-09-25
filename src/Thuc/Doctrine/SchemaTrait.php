@@ -49,7 +49,7 @@ trait SchemaTrait {
 
     public function export() {
         return (object) [
-                    "id" => $this->id,
+                    "id" => $this->getId(),
                     "data" => $this->getData(),
                     "last_update" => $this->getLastUpdate(),
                     "since" => $this->getSince()

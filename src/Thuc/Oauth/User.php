@@ -11,6 +11,14 @@ use Doctrine\ODM\MongoDB\SoftDelete\SoftDeleteable;
  */
 class User implements SoftDeleteable {
 
+    public static $PUBLIC = true;
+    public static $UNPUBLIC = false;
+    public static $ACTIVE = 1;
+    public static $INACTIVE = -1;
+    public static $PICTURE_DEFAULT = "/img/avatar.png";
+    public static $FROM_GOOGLE = "google";
+    public static $FROM_NATIVE = "native";
+
     /** @ODM\Field(type="date") */
     private $deletedAt;
 
@@ -130,13 +138,12 @@ class User implements SoftDeleteable {
      * @ODM\Field(type="timestamp")
      */
     private $last_update;
-    public static $PUBLIC = true;
-    public static $UNPUBLIC = false;
-    public static $ACTIVE = 1;
-    public static $INACTIVE = -1;
-    public static $PICTURE_DEFAULT = "/img/avatar.png";
-    public static $FROM_GOOGLE = "google";
-    public static $FROM_NATIVE = "native";
+
+    /**
+     *
+     * @ODM\ReferenceMany(targetDocument="\System\Model\Member", mappedBy="user", sort={"since"="desc"})
+     */
+    private $members;
 
     public function __construct($client_id = "") {
         $this->construct($client_id);
@@ -156,6 +163,16 @@ class User implements SoftDeleteable {
         $this->data = [];
         $this->since = new \MongoTimeStamp();
         $this->last_update = new \MongoTimeStamp();
+    }
+
+    public function getMembers() {
+        $members = [];
+        if ($this->members) {
+            foreach ($this->members as $val) {
+                $members[] = $val->export();
+            }
+        }
+        return $members;
     }
 
     public function activate() {
