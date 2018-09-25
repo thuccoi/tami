@@ -141,7 +141,7 @@ class User implements SoftDeleteable {
 
     /**
      *
-     * @ODM\ReferenceMany(targetDocument="\System\Model\Member", mappedBy="user", sort={"since"="desc"})
+     * @ODM\ReferenceMany(targetDocument="System\Model\Member", mappedBy="user", sort={"since"="desc"})
      */
     private $members;
 

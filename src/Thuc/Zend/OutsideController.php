@@ -204,7 +204,7 @@ class OutsideController extends AbstractActionController {
     public function logOutAction() {
         //remove viewer
         unset($this->sessionContainer->viewer);
-        
+
         return $this->redirect()->toRoute("outside", ["action" => "dang-nhap"]);
     }
 
@@ -255,7 +255,11 @@ class OutsideController extends AbstractActionController {
                 $user = $this->user->getOne($email);
             }
 
-            $this->sessionContainer->viewer = $user;
+            //auto create member for user
+            $query = new \System\Query\Member($this->dm);
+            $query->create($user);
+
+            $this->sessionContainer->viewer = $query->getOne($user->getId());
         }
 
         return $this->redirect()->toRoute("outside", ["action" => "dang-nhap"]);
@@ -279,7 +283,12 @@ class OutsideController extends AbstractActionController {
                 } else if (!$user->isActive()) {
                     $this->code->error("Tài khoản này chưa được kích hoạt");
                 } else {
-                    $this->sessionContainer->viewer = $user;
+                    
+                    //auto create member for user
+                    $query = new \System\Query\Member($this->dm);
+                    $query->create($user);
+
+                    $this->sessionContainer->viewer = $query->getOne($user->getId());
                 }
             } else {
                 $incorrect = true;
