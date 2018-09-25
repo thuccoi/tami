@@ -24,3 +24,11 @@ thêm ENV vào onDispatch controller
   //enviroment
         $this->layout()->ENV = $this->ENV;
 }`
+
+# add class Member to System\Model\Member 
+
+    /**
+     *
+     * @ODM\ReferenceOne(targetDocument="\Thuc\Oauth\User", inversedBy="members")
+     */
+    private $user;
