@@ -100,6 +100,7 @@ class UserController extends AbstractActionController {
         $update = $this->user->update($user_id, $data);
 
         if ($update === true) {
+            $this->sessionContainer->viewer->setUser($this->user->getOne($user_id));
             $this->code->success("Cập nhật thông tin của bạn thành công");
         }
 
