@@ -100,10 +100,6 @@ class UserController extends AbstractActionController {
         $update = $this->user->update($user_id, $data);
 
         if ($update === true) {
-            $query = new \System\Query\Member($this->dm);
-            unset($this->sessionContainer->viewer);
-            $this->sessionContainer->viewer = $query->getOne($user_id);
-
             $this->code->success("Cập nhật thông tin của bạn thành công");
         }
 
